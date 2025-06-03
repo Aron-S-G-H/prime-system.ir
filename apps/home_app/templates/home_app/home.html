@@ -1,0 +1,596 @@
+{% extends 'templates/base.html' %}
+{% load humanize %}
+{% load jalali_tags %}
+
+{% block header %}
+    <meta name="description" content="فروشگاه تجهیزات الکترونیکی پرایم سیستم، فروش انواع تجهیرات الکترونیک اعم از کیس و کیبورد و مانیتور نو و استوک و دست دوم"/>
+    <meta name="robots" content="index, follow" />
+    <meta name="canonical" content="https://www.prime-system.ir, https://prime-system.ir" />
+    <meta name="keywords" content="پرایم سیستم, prime system, فروشگاه آنلاین پرایم سیستم, خرید تجهیزات الکترونیک,استوک و نو, فروش لپ‌تاپ, فروش قطعات کامپیوتر, پیکربندی شبکه,اسمبل سیستم"/>
+    <title>پرایم سیستم</title>
+{% endblock %}
+
+{% block main %}
+    <!-- home-slider -->
+    {% if slider_banners %}
+    <div class="home-slider py-20">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="swiper" id="homeSlider">
+                        <div class="swiper-wrapper">
+                            {% for banner in slider_banners %}
+                            <div class="swiper-slide">
+                                {% if banner.url %}
+                                    <a href="{{ banner.url }}" aria-label="view category"><img src="{{ banner.image.url }}" class="d-sm-block d-none" loading="lazy" alt="slider-banner{{ banner.id }}"></a>
+                                    <a href="{{ banner.url }}" aria-label="view category"><img src="{{ banner.phone_image.url }}" class="d-sm-none d-block" loading="lazy" alt="slider-banner-phone{{ banner.id }}"></a>
+                                {% else %}
+                                    <img src="{{ banner.image.url }}" class="d-sm-block d-none" loading="lazy" alt="slider-banner{{ banner.id }}">
+                                    <img src="{{ banner.phone_image.url }}" class="d-sm-none d-block" loading="lazy" alt="slider-banner-phone{{ banner.id }}">
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="swiper-pagination"></div>
+                        <div class="swiper-button-next d-md-flex d-none"></div>
+                        <div class="swiper-button-prev d-md-flex d-none"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    <!-- end home-slider -->
+
+    <!-- feature -->
+    <div class="feature py-20">
+        <div class="container-fluid">
+            <div class="swiper" id="feature">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <div class="feature-item text-center active">
+                            <div class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                                    class="bi bi-coin" viewBox="0 0 16 16">
+                                    <path d="M5.5 9.511c.076.954.83 1.697 2.182 1.785V12h.6v-.709c1.4-.098 2.218-.846 2.218-1.932 0-.987-.626-1.496-1.745-1.76l-.473-.112V5.57c.6.068.982.396 1.074.85h1.052c-.076-.919-.864-1.638-2.126-1.716V4h-.6v.719c-1.195.117-2.01.836-2.01 1.853 0 .9.606 1.472 1.613 1.707l.397.098v2.034c-.615-.093-1.022-.43-1.114-.9H5.5zm2.177-2.166c-.59-.137-.91-.416-.91-.836 0-.47.345-.822.915-.925v1.76h-.005zm.692 1.193c.717.166 1.048.435 1.048.91 0 .542-.412.914-1.135.982V8.518l.087.02z"></path>
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"></path>
+                                    <path d="M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11zm0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"></path>
+                                </svg>
+                            </div>
+                            <div class="title mt-2 d-flex align-items-center justify-content-center flex-column">
+                                <h6 class="font-12 fw-bold">محصولات نو و استوک</h6>
+                                <h6 class="font-10 text-muted">با بهترین قیمت</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="feature-item text-center">
+                            <div class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-shield-check" viewBox="0 0 16 16">
+                                  <path d="M5.338 1.59a61 61 0 0 0-2.837.856.48.48 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.7 10.7 0 0 0 2.287 2.233c.346.244.652.42.893.533q.18.085.293.118a1 1 0 0 0 .101.025 1 1 0 0 0 .1-.025q.114-.034.294-.118c.24-.113.547-.29.893-.533a10.7 10.7 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.8 11.8 0 0 1-2.517 2.453 7 7 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7 7 0 0 1-1.048-.625 11.8 11.8 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 63 63 0 0 1 5.072.56"></path>
+                                  <path d="M10.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0"></path>
+                                </svg>
+                            </div>
+                            <div class="title mt-2 d-flex align-items-center justify-content-center flex-column">
+                                <h6 class="font-12 fw-bold">خرید مطمئن</h6>
+                                <h6 class="font-10 text-muted">گارانتی و تضمین کیفیت</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="feature-item text-center">
+                            <div class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pc-display" viewBox="0 0 16 16">
+                                  <path d="M8 1a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1zm1 13.5a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0m2 0a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0M9.5 1a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1zM9 3.5a.5.5 0 0 0 .5.5h5a.5.5 0 0 0 0-1h-5a.5.5 0 0 0-.5.5M1.5 2A1.5 1.5 0 0 0 0 3.5v7A1.5 1.5 0 0 0 1.5 12H6v2h-.5a.5.5 0 0 0 0 1H7v-4H1.5a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .5-.5H7V2z"></path>
+                                </svg>
+                            </div>
+                            <div class="title mt-2 d-flex align-items-center justify-content-center flex-column">
+                                <h6 class="font-12 fw-bold">اسمبل سیستم</h6>
+                                <h6 class="font-10 text-muted">توسط کارشناسان فنی</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="feature-item text-center">
+                            <div class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-globe2" viewBox="0 0 16 16">
+                                  <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m7.5-6.923c-.67.204-1.335.82-1.887 1.855q-.215.403-.395.872c.705.157 1.472.257 2.282.287zM4.249 3.539q.214-.577.481-1.078a7 7 0 0 1 .597-.933A7 7 0 0 0 3.051 3.05q.544.277 1.198.49zM3.509 7.5c.036-1.07.188-2.087.436-3.008a9 9 0 0 1-1.565-.667A6.96 6.96 0 0 0 1.018 7.5zm1.4-2.741a12.3 12.3 0 0 0-.4 2.741H7.5V5.091c-.91-.03-1.783-.145-2.591-.332M8.5 5.09V7.5h2.99a12.3 12.3 0 0 0-.399-2.741c-.808.187-1.681.301-2.591.332zM4.51 8.5c.035.987.176 1.914.399 2.741A13.6 13.6 0 0 1 7.5 10.91V8.5zm3.99 0v2.409c.91.03 1.783.145 2.591.332.223-.827.364-1.754.4-2.741zm-3.282 3.696q.18.469.395.872c.552 1.035 1.218 1.65 1.887 1.855V11.91c-.81.03-1.577.13-2.282.287zm.11 2.276a7 7 0 0 1-.598-.933 9 9 0 0 1-.481-1.079 8.4 8.4 0 0 0-1.198.49 7 7 0 0 0 2.276 1.522zm-1.383-2.964A13.4 13.4 0 0 1 3.508 8.5h-2.49a6.96 6.96 0 0 0 1.362 3.675c.47-.258.995-.482 1.565-.667m6.728 2.964a7 7 0 0 0 2.275-1.521 8.4 8.4 0 0 0-1.197-.49 9 9 0 0 1-.481 1.078 7 7 0 0 1-.597.933M8.5 11.909v3.014c.67-.204 1.335-.82 1.887-1.855q.216-.403.395-.872A12.6 12.6 0 0 0 8.5 11.91zm3.555-.401c.57.185 1.095.409 1.565.667A6.96 6.96 0 0 0 14.982 8.5h-2.49a13.4 13.4 0 0 1-.437 3.008M14.982 7.5a6.96 6.96 0 0 0-1.362-3.675c-.47.258-.995.482-1.565.667.248.92.4 1.938.437 3.008zM11.27 2.461q.266.502.482 1.078a8.4 8.4 0 0 0 1.196-.49 7 7 0 0 0-2.275-1.52c.218.283.418.597.597.932m-.488 1.343a8 8 0 0 0-.395-.872C9.835 1.897 9.17 1.282 8.5 1.077V4.09c.81-.03 1.577-.13 2.282-.287z"></path>
+                                </svg>
+                            </div>
+                            <div class="title mt-2 d-flex align-items-center justify-content-center flex-column">
+                                <h6 class="font-12 fw-bold">پیکربندی شبکه</h6>
+                                <h6 class="font-10 text-muted">توسظ مهندسین با تجربه</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-slide">
+                        <div class="feature-item text-center">
+                            <div class="icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                    class="bi bi-headset" viewBox="0 0 16 16">
+                                    <path d="M8 1a5 5 0 0 0-5 5v1h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a6 6 0 1 1 12 0v6a2.5 2.5 0 0 1-2.5 2.5H9.366a1 1 0 0 1-.866.5h-1a1 1 0 1 1 0-2h1a1 1 0 0 1 .866.5H11.5A1.5 1.5 0 0 0 13 12h-1a1 1 0 0 1-1-1V8a1 1 0 0 1 1-1h1V6a5 5 0 0 0-5-5z"></path>
+                                </svg>
+                            </div>
+                            <div class="title mt-2 d-flex align-items-center justify-content-center flex-column">
+                                <h6 class="font-12 fw-bold">مشاوره خرید</h6>
+                                <h6 class="font-10 text-muted">برای تمامی خرید های شما</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end feature -->
+
+    {% if sales_products %}
+    <div class="offers">
+        <div class="container-fluid">
+            <div class="offer">
+                <div class="row">
+                    <div class="col-lg-8 col-xxl-9">
+                        <div style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="swiper" id="offerItem">
+                            <div class="swiper-wrapper">
+                                {% for product in sales_products.all %}
+                                <div class="swiper-slide">
+                                    <div class="offer-item">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="offer-discount">
+                                                    <span>٪{{ product.discount_percent }} تخفیف</span>
+                                                </div>
+                                                <div class="offer-img">
+                                                    <img src="{{ product.images.all.0.image.url }}" loading="lazy" alt="{{ product.slug }}" title="{{ product.english_name }}" class="img-fluid">
+                                                    <div class='countdown' data-id="{{ product.id }}" data-url="{% url 'main:countdown_end' %}" data-date="{{ product.special_price_time.date|date:'Y-m-d' }}" data-time="{{ product.special_price_time.time|time:'H:i' }}"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="offer-content">
+                                                    <div class="offer-title d-md-inline-block d-none">
+                                                        <h4>پیشنهاد شگفت انگیز <span>فروشگاه</span></h4>
+                                                    </div>
+                                                    <div class="offer-desc">
+                                                        <div class="se-title">
+                                                            <h5 class="text-overflow-2">{{ product.name }}</h5>
+                                                            <h6 class="text-muted text-overflow-2">{{ product.english_name }}</h6>
+                                                        </div>
+                                                        <div class="se-desc">
+                                                            <h6>ویژگی محصول:</h6>
+                                                            <ul>
+                                                                {% for item in product.attributes.all|slice:':4' %}
+                                                                <li>
+                                                                    <span class="title">{{ item.attribute }}:</span>
+                                                                    <span class="desc">{{ item.value }}</span>
+                                                                </li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                            <div class="order-progress py-3">
+                                                                {% if product.introduction %}
+                                                                    <h6 class="fw-bold mb-2">{{ product.introduction|truncatewords:30|safe }}</h6>
+                                                                {% else %}
+                                                                    <h6 class="fw-bold mb-2">{{ product.description|truncatewords:30|safe }}</h6>
+                                                                {% endif %}
+                                                            </div>
+                                                        </div>
+                                                        <div class="offer-desc-price">
+                                                            <span class="old">{{ product.base_price|intcomma:False }} تومان</span>
+                                                            <span class="new">{{ product.special_price|intcomma:False }} تومان</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="offer-btn">
+                                                        <a class="btn border-0 rounded-pill main-color-one-bg" href="{% url 'product:detail' product.slug %}">
+                                                            <i class="bi bi-cart-plus"></i> بریم واسه خرید!
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            <div class="swiper-pagination d-lg-none d-block"></div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-xxl-3 d-lg-block d-none">
+                        <div class="offer-item-link">
+                            <div class="swiper" id="offerItemLink">
+                                <div class="swiper-wrapper">
+                                    {% for product in sales_products %}
+                                    <div class="swiper-slide">
+                                        <div class="offer-item-link-item shadow-sm">
+                                            <h6>{{ product.name }}</h6>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    <!-- end offers -->
+
+    {% if categories %}
+    <div class="main-category py-20">
+        <div class="container-fluid">
+            <div class="parent">
+                <div class="row justify-content-center">
+                    <div class="main-category-title">
+                        <h4 class="main-title">دسته بندی های فروشگاه</h4>
+                    </div>
+                    {% for category in categories %}
+                    <div class="col-lg-2 col-sm-4 col-6 mb-3">
+                        <a href="{% url 'product:category' category.slug %}">
+                            <div class="item">
+                                <div class="image">
+                                    <img src="{{ category.icon.url }}" loading="lazy" alt="{{ category.slug }}" title="{{ category.english_title }}" class="img-fluid">
+                                </div>
+                                <div class="title mt-2">
+                                    <p class="font-14 mb-0">{{ category.title }}</p>
+                                </div>
+                                <div class="hover">
+                                    <span class="badge rounded-pill bg-dark font-14">{{ category.products.count }}</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    <!-- end main category -->
+
+    {% if small_banners %}
+    <div class="banner py-20">
+        <div class="container-fluid">
+            <div class="row">
+                {% for banner in small_banners %}
+                    <div class="col-md-3 col-6 mt-md-0 mt-2">
+                    {% if banner.url %}
+                        <a href="{{ banner.url }}">
+                            <img src="{{ banner.image.url }}" class="img-fluid rounded-3 shadow-box" loading="lazy" alt="small-banner{{ banner.id }}">
+                        </a>
+                    {% else %}
+                        <img src="{{ banner.image.url }}" class="img-fluid rounded-3 shadow-box" loading="lazy" alt="small-banner{{ banner.id }}">
+                    {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    <!-- end banner -->
+
+    {% if laptops_products %}
+    <div class="product-box-three py-20">
+        <div class="container-fluid">
+            <div class="parent">
+                <div class="content-title">
+                    <div class="item">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box2-heart" viewBox="0 0 16 16">
+                            <path d="M8 7.982C9.664 6.309 13.825 9.236 8 13 2.175 9.236 6.336 6.31 8 7.982"></path>
+                            <path d="M3.75 0a1 1 0 0 0-.8.4L.1 4.2a.5.5 0 0 0-.1.3V15a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V4.5a.5.5 0 0 0-.1-.3L13.05.4a1 1 0 0 0-.8-.4zm0 1H7.5v3h-6zM8.5 4V1h3.75l2.25 3zM15 5v10H1V5z"></path>
+                        </svg>
+                        <h5 class="title">لپ تاپ ها</h5>
+                    </div>
+                    <div class="item">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-box-arrow-in-left" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M10 3.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 1 1 0v2A1.5 1.5 0 0 1 9.5 14h-8A1.5 1.5 0 0 1 0 12.5v-9A1.5 1.5 0 0 1 1.5 2h8A1.5 1.5 0 0 1 11 3.5v2a.5.5 0 0 1-1 0v-2z"></path>
+                            <path fill-rule="evenodd" d="M4.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H14.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"></path>
+                        </svg>
+                        <a href="{% url 'product:general-category' 'laptop' %}">
+                            <h5 class="title text-decoration-underline">مشاهده همه</h5>
+                        </a>
+                    </div>
+                </div>
+                <div class="swiper free-mode" id="product-box">
+                    <div class="swiper-wrapper">
+                        {% for product in laptops_products %}
+                        <div class="swiper-slide">
+                            <div class="product-box-item bg-white w-100">
+                                <div class="hover">
+                                    <div class="hover-color">
+                                        {% for color in product.color.all %}
+                                            <span style="background-color: {{ color.hex_color }};" data-hint="{{ color.name }}" class="hint--left"></span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <a href="{% url 'product:detail' product.slug %}" title="{{ product.english_name }}">
+                                    <div class="image text-center">
+                                        {% if product.images.count > 1 %}
+                                            <img src="{{ product.images.all.0.image.url }}" loading="lazy" alt="{{ product.slug }}-1" class="img-fluid one-image">
+                                            <img src="{{ product.images.all.1.image.url }}" loading="lazy" alt="{{ product.slug }}-2" class="img-fluid two-image">
+                                        {% else %}
+                                            <img src="{{ product.images.all.0.image.url }}" loading="lazy" alt="{{ product.slug }}" class="img-fluid">
+                                        {% endif %}
+                                    </div>
+                                </a>
+                                <div class="desc">
+                                    <div class="title">
+                                        <h6 class="title-fa def-color fw-bold text-overflow-2">{{ product.name }}</h6>
+                                        <h6 class="title-en text-muted text-overflow-2">{{ product.english_name }}</h6>
+                                    </div>
+                                    <div class="foot d-flex justify-content-between align-items-center">
+                                        {% if product.disable_order %}
+                                        <div class="d-flex align-items-center justify-content-center me-3">
+                                            <a class="btn border-0 shadow-box waves-effect waves-light" role="button" data-hint="برای ثبت سفارش تماس بگیرید" style="background-color: white" href="tel:{{ information.phone_number }}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-emoji-neutral" viewBox="0 0 16 16">
+                                                  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"></path>
+                                                  <path d="M4 10.5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 0-1h-7a.5.5 0 0 0-.5.5m3-4C7 5.672 6.552 5 6 5s-1 .672-1 1.5S5.448 8 6 8s1-.672 1-1.5m4 0c0-.828-.448-1.5-1-1.5s-1 .672-1 1.5S9.448 8 10 8s1-.672 1-1.5"></path>
+                                                </svg>
+                                                <span class="text-overflow fw-bold font-14">تماس بگیرید</span>
+                                            </a>
+                                        </div>
+                                        {% else %}
+                                        <div class="d-flex align-items-center justify-content-center">
+                                            <a href="{% url 'cart:add' product.id %}" role="button" aria-label="add to cart">
+                                                <div data-hint="افزودن به سبد خرید" class="add hint--right">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-heart" viewBox="0 0 16 16">
+                                                        <path fill-rule="evenodd" d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0M14 14V5H2v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1M8 7.993c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132"></path>
+                                                    </svg>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        {% endif %}
+                                        <div class="price d-flex flex-column justify-content-end">
+                                            {% if product.special_price %}
+                                                <div>
+                                                    <span class="fw-bold font-18 def-color">{{ product.special_price|intcomma:False }}</span>
+                                                    <span class="badge main-color-two-bg rounded-pill">{{ product.discount_percent }}%</span>
+                                                </div>
+                                                <div class="d-flex justify-content-center align-items-center">
+                                                    <span
+                                                        class="text-muted font-14 text-decoration-line-through">{{ product.base_price|intcomma:False }}</span>
+                                                    <span class="text-muted font-14">تومان</span>
+                                                </div>
+                                            {% else %}
+                                                <div>
+                                                    <span class="fw-bold font-18 def-color">{{ product.base_price|intcomma:False }}</span>
+                                                    <span class="text-muted font-14">تومان</span>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="swiper-pagination"></div>
+                    <div class="swiper-button-next d-sm-flex d-none"></div>
+                    <div class="swiper-button-prev d-sm-flex d-none"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    <!-- end product box -->
+
+    {% if large_banners %}
+    <div class="banner py-20">
+        <div class="container-fluid">
+            <div class="row">
+                {% for banner in large_banners %}
+                    <div class="col-md-6 mt-md-0 mt-2">
+                    {% if banner.url %}
+                        <a href="{{ banner.url }}">
+                            <img src="{{ banner.image.url }}" class="img-fluid rounded-3 shadow-box" loading="lazy" alt="large-banner{{ banner.id }}">
+                        </a>
+                    {% else %}
+                        <img src="{{ banner.image.url }}" class="img-fluid rounded-3 shadow-box" loading="lazy" alt="large-banner{{ banner.id }}">
+                    {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    <!-- end banner -->
+
+    {% if mouse_keyboards_products %}
+    <div class="product-box-three product-box-four py-20">
+        <div class="container-fluid">
+            <div class="parent">
+                <div class="content-title">
+                    <div class="item">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box2-heart" viewBox="0 0 16 16">
+                            <path d="M8 7.982C9.664 6.309 13.825 9.236 8 13 2.175 9.236 6.336 6.31 8 7.982"></path>
+                            <path d="M3.75 0a1 1 0 0 0-.8.4L.1 4.2a.5.5 0 0 0-.1.3V15a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V4.5a.5.5 0 0 0-.1-.3L13.05.4a1 1 0 0 0-.8-.4zm0 1H7.5v3h-6zM8.5 4V1h3.75l2.25 3zM15 5v10H1V5z"></path>
+                        </svg>
+                        <h5 class="title">کیبورد و ماوس ها</h5>
+                    </div>
+                    <div class="item">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-box-arrow-in-left" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M10 3.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 1 1 0v2A1.5 1.5 0 0 1 9.5 14h-8A1.5 1.5 0 0 1 0 12.5v-9A1.5 1.5 0 0 1 1.5 2h8A1.5 1.5 0 0 1 11 3.5v2a.5.5 0 0 1-1 0v-2z"></path>
+                            <path fill-rule="evenodd" d="M4.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H14.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"></path>
+                        </svg>
+                        <a href="{% url 'product:general-category' 'keyboardandmouse' %}">
+                            <h5 class="title text-decoration-underline">مشاهده همه</h5>
+                        </a>
+                    </div>
+                </div>
+                <div class="swiper free-mode" id="product-box">
+                    <div class="swiper-wrapper">
+                        {% for product in mouse_keyboards_products %}
+                        <div class="swiper-slide">
+                            <div class="product-box-item bg-white w-100">
+                                <div class="hover">
+                                    <div class="hover-color">
+                                        {% for color in product.color.all %}
+                                            <span style="background-color: {{ color.hex_color }};" data-hint="{{ color.name }}" class="hint--left"></span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <a href="{% url 'product:detail' product.slug %}" title="{{ product.english_name }}">
+                                    <div class="image text-center">
+                                        {% if product.images.count > 1 %}
+                                            <img src="{{ product.images.all.0.image.url }}" loading="lazy" alt="{{ product.slug }}-1" class="img-fluid one-image">
+                                            <img src="{{ product.images.all.1.image.url }}" loading="lazy" alt="{{ product.slug }}-2" class="img-fluid two-image">
+                                        {% else %}
+                                            <img src="{{ product.images.all.0.image.url }}" loading="lazy" alt="{{ product.slug }}" class="img-fluid">
+                                        {% endif %}
+                                    </div>
+                                </a>
+                                <div class="desc">
+                                    <div class="title">
+                                        <h6 class="title-fa def-color fw-bold text-overflow-2">{{ product.name }}</h6>
+                                        <h6 class="title-en text-muted text-overflow-2">{{ product.english_name }}</h6>
+                                    </div>
+                                    <div class="foot d-flex justify-content-between align-items-center">
+                                        {% if product.disable_order %}
+                                        <div class="d-flex align-items-center justify-content-center me-3">
+                                            <a class="btn border-0 shadow-box waves-effect waves-light" role="button" data-hint="برای ثبت سفارش تماس بگیرید" style="background-color: white" href="tel:{{ information.phone_number }}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-emoji-neutral" viewBox="0 0 16 16">
+                                                  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"></path>
+                                                  <path d="M4 10.5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 0-1h-7a.5.5 0 0 0-.5.5m3-4C7 5.672 6.552 5 6 5s-1 .672-1 1.5S5.448 8 6 8s1-.672 1-1.5m4 0c0-.828-.448-1.5-1-1.5s-1 .672-1 1.5S9.448 8 10 8s1-.672 1-1.5"></path>
+                                                </svg>
+                                                <span class="text-overflow fw-bold font-14">تماس بگیرید</span>
+                                            </a>
+                                        </div>
+                                        {% else %}
+                                        <div class="d-flex align-items-center justify-content-center">
+                                            <a href="{% url 'cart:add' product.id %}" role="button" aria-label="add to cart">
+                                                <div data-hint="افزودن به سبد خرید" class="add hint--right">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-heart" viewBox="0 0 16 16">
+                                                        <path fill-rule="evenodd" d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0M14 14V5H2v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1M8 7.993c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132"></path>
+                                                    </svg>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        {% endif %}
+                                        <div class="price d-flex flex-column justify-content-end">
+                                            {% if product.special_price %}
+                                                <div>
+                                                    <span class="fw-bold font-18 def-color">{{ product.special_price|intcomma:False }}</span>
+                                                    <span class="badge main-color-two-bg rounded-pill">{{ product.discount_percent }}%</span>
+                                                </div>
+                                                <div class="d-flex justify-content-center align-items-center">
+                                                    <span
+                                                        class="text-muted font-14 text-decoration-line-through">{{ product.base_price|intcomma:False }}</span>
+                                                    <span class="text-muted font-14">تومان</span>
+                                                </div>
+                                            {% else %}
+                                                <div>
+                                                    <span class="fw-bold font-18 def-color">{{ product.base_price|intcomma:False }}</span>
+                                                    <span class="text-muted font-14">تومان</span>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="swiper-pagination"></div>
+                    <div class="swiper-button-next d-sm-flex d-none"></div>
+                    <div class="swiper-button-prev d-sm-flex d-none"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    <!-- end product box -->
+
+    {% if company_logos %}
+    <div class="product-box brand-box py-20">
+        <div class="container-fluid">
+            <div class="parent">
+                <div class="content-title">
+                    <div class="item">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-box-seam" viewBox="0 0 16 16">
+                            <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2l-2.218-.887zm3.564 1.426L5.596 5 8 5.961 14.154 3.5l-2.404-.961zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z"></path>
+                        </svg>
+                        <h5 class="title">برند ها</h5>
+                    </div>
+                    <div class="item"></div>
+                </div>
+                <div class="swiper py-3" id="swiper-box">
+                    <div class="swiper-wrapper">
+                        {% for logo in company_logos %}
+                        <div class="swiper-slide">
+                            <div class="image text-center">
+                                <img src="{{ logo.image.url }}" class="img-fluid" loading="lazy" title="{{ logo.company_name }}" alt="{{ logo.company_name }}-logo">
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="swiper-pagination"></div>
+                    <div class="swiper-button-next d-sm-flex d-none"></div>
+                    <div class="swiper-button-prev d-sm-flex d-none"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    <!-- end product box --brand -->
+
+    {% if blog_posts %}
+    <div class="product-box blog-box py-20">
+        <div class="container-fluid">
+            <div class="parent">
+                <div class="content-title">
+                    <div class="item">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-box-seam" viewBox="0 0 16 16">
+                            <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2l-2.218-.887zm3.564 1.426L5.596 5 8 5.961 14.154 3.5l-2.404-.961zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z"></path>
+                        </svg>
+                        <h5 class="title">آخرین مطالب وبلاگ</h5>
+                    </div>
+                    <div class="item">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-box-arrow-in-left" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M10 3.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 1 1 0v2A1.5 1.5 0 0 1 9.5 14h-8A1.5 1.5 0 0 1 0 12.5v-9A1.5 1.5 0 0 1 1.5 2h8A1.5 1.5 0 0 1 11 3.5v2a.5.5 0 0 1-1 0v-2z"></path>
+                            <path fill-rule="evenodd" d="M4.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H14.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"></path>
+                        </svg>
+                        <a href="{% url 'blog:list' %}">
+                            <h5 class="title text-decoration-underline">مشاهده همه</h5>
+                        </a>
+                    </div>
+                </div>
+                <div class="swiper py-5" id="swiper-box-two">
+                    <div class="swiper-wrapper">
+                        {% for blog in blog_posts %}
+                        <div class="swiper-slide">
+                            <a href="{% url 'blog:detail' blog.slug %}" title="{{ blog.english_title }}">
+                                <div class="image-blog text-center">
+                                    <img src="{{ blog.poster.poster.url }}" class="img-fluid" alt="{{ blog.slug }}" loading="lazy">
+                                    <div class="blog-desc position-absolute bottom-0">
+                                        <h6 class="font-14">{{ blog.title }}</h6>
+                                        <div class="d-flex justify-content-between align-items-center my-2">
+                                            <div class="like">
+                                                <span class="icon">
+                                                    <i fill="currentColor" class="bi bi-box-seam"></i>
+                                                </span>
+                                                <span class="counter font-12">{{ blog.category.name }}</span>
+                                            </div>
+                                            <div class="date">
+                                                <span class="font-12">{{ blog.created_at|to_jalali:"%Y/%m/%d" }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="swiper-pagination"></div>
+                    <div class="swiper-button-next d-sm-flex d-none"></div>
+                    <div class="swiper-button-prev d-sm-flex d-none"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    <!-- end product box --blog -->
+{% endblock %}

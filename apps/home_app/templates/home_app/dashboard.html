@@ -1,0 +1,64 @@
+{% extends 'templates/base.html' %}
+{% load static %}
+
+{% block header %}
+    <meta name="description" content="فروشگاه تجهیزات الکترونیکی پرایم سیستم، فروش انواع تجهیرات الکترونیک اعم از کیس و کیبورد و مانیتور نو و استوک و دست دوم"/>
+    <meta name="robots" content="index, follow" />
+    <meta name="canonical" content="https://prime-system.ir/dashboard" />
+    <meta name="keywords" content="پرایم سیستم, prime system, فروشگاه آنلاین پرایم سیستم, خرید تجهیزات الکترونیک,استوک و نو, فروش لپ‌تاپ, فروش قطعات کامپیوتر, پیکربندی شبکه,اسمبل سیستم"/>
+    <title>پنل کاربری</title>
+{% endblock %}
+
+{% block main %}
+    <!-- bread croumb -->
+    <div class="content">
+        <div class="container-fluid">
+            <nav aria-label="breadcrumb" class="my-lg-0 my-2">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="{% url 'main:Home_page' %}" class="font-14 text-muted">خانه</a></li>
+                    <li class="breadcrumb-item active main-color-one-color font-14" aria-current="page">پنل کاربری</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <!-- start main-data -->
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row gy-2">
+                <div class="col-lg-3">
+                    <div class="content-box">
+                        <div class="panel-box">
+                            <div class="d-flex align-items-center">
+                                <img src="{% static 'image/user-profile.png' %}" class="img-fluid rounded-circle me-2 shadow-sm"
+                                    alt="">
+                                <div class="d-grid gap-2">
+                                    <h4 class="font-16">{{ request.user.get_full_name }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content-box">
+                        <div class="profile-box">
+                            <nav class="navbar profile-box-nav">
+                                <ul class="navbar-nav flex-column">
+                                    <li class="nav-item"><a href="{% url 'account:logout' %}" class="nav-link mct-hover">
+                                        <i class="bi bi-emoji-frown"></i>خروج از حساب کاربری</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="content-box">
+                        <div class="text-center">
+                            <img src="{% static 'image/coming-soon.png' %}" class="img-fluid" loading="lazy" alt="coming-soon">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end main-data -->
+{% endblock %}

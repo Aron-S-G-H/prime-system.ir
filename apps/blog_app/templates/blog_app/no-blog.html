@@ -1,0 +1,26 @@
+{% extends 'templates/base.html' %}
+{% load static %}
+
+{% block header %}
+    <meta name="description" content="در بخش وبلاگ پرایم سیستم جدیدترین مقالات و بینش ها را کاوش کنید"/>
+    <meta name="robots" content="index, follow" />
+    <meta name="canonical" content="https://prime-system.ir/blogs/" />
+    <meta name="keywords" content="وبلاگ, مقالات تکنولوژی, تجهیزات الکترونیک, خرید آنلاین, بررسی محصولات, آموزش تعمیرات, نقد و بررسی, اخبار تکنولوژی, پرایم سیستم, راهنمای خرید, نکات فنی, محصولات الکترونیک, بلاگ فروشگاهی, راهنمای تعمیرات, تکنولوژی روز">    <title>وبلاگ</title>
+    <title>وبلاگ</title>
+{% endblock %}
+
+{% block main %}
+    <!-- start main-data -->
+    <div class="content">
+        <div class="container-fluid">
+            <div class="content-box">
+                <div class="not-found"></div>
+                <div class="not-found-desc text-center">
+                    <p class="font-18 fw-bold text-muted">هنوز مقاله ای منتشر نشده است</p>
+                    <a href="{% url 'main:Home_page' %}" role="button" class="btn border-0 btn-lg mt-2 main-color-three-bg rounded-pill ">صفحه اصلی</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end main-data -->
+{% endblock %}

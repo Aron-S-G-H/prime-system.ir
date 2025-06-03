@@ -1,0 +1,415 @@
+{% extends 'templates/base.html' %}
+{% load humanize %}
+
+{% block header %}
+    <meta name="description" content="فروشگاه تجهیزات الکترونیکی پرایم سیستم، فروش انواع تجهیرات الکترونیک اعم از کیس و کیبورد و مانیتور نو و استوک و دست دوم"/>
+    <meta name="robots" content="index, follow" />
+    <meta name="canonical" content="https://www.prime-system.ir/products/, https://prime-system.ir/products/" />
+    <meta name="keywords" content="پرایم سیستم, prime system, فروشگاه آنلاین پرایم سیستم, خرید تجهیزات الکترونیک,استوک و نو, فروش لپ‌تاپ, فروش قطعات کامپیوتر, پیکربندی شبکه,اسمبل سیستم"/>
+    <title>محصولات پرایم</title>
+{% endblock %}
+
+{% block main %}
+    <!-- start breadcrumb -->
+    <div class="content">
+        <div class="container-fluid">
+            <nav aria-label="breadcrumb" class="my-lg-0 my-2">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="{% url 'main:Home_page' %}" class="font-14 text-muted">خانه</a></li>
+                    <li class="breadcrumb-item active main-color-one-color font-14" aria-current="page">فروشگاه</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <!-- end breadcrumb -->
+
+    <!-- main content page -->
+    <div class="content">
+        <div class="container-fluid">
+            <!-- start filter in mobile -->
+            <div class="custom-filter d-lg-none d-block">
+                <button class="btn border-0 main-color-two-bg shadow-box px-3 rounded-3 position-fixed" style="z-index: 999;bottom:80px;" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                    <i class="bi bi-funnel font-20 fw-bold"></i>
+                    <span class="d-block font-14">فیلتر</span>
+                </button>
+
+                <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel" style="margin-top: 70px">
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title" id="offcanvasRightLabel">فیلتر ها</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                        <div class="item-boxs">
+                            <div class="item-box bg-white shadow-box">
+                                <div class="title">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <h6 class="font-14">محدوده قیمت</h6>
+                                        <a class="btn border-0" data-bs-toggle="collapse" href="#collapsePrice" role="button" aria-expanded="false">
+                                            <i class="bi bi-chevron-down"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="desc collapse show" id="collapsePrice">
+                                    <form method="get" id="range-form-mobile">
+                                        <div class="form-group">
+                                            <input type="range" value="0" class="catRange" name="range">
+                                            <div class="show-more-btn mt-2 text-center">
+                                                <button onclick="rangeSubmit('range-form-mobile')" class="btn border-0 main-color-two-bg shadow-box waves-effect waves-light">اعمال فیلتر
+                                                    <i class="bi bi-filter"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <div class="item-box bg-white shadow-box">
+                                <div class="title">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <h6 class="font-14">موجودیت</h6>
+                                        <a class="btn border-0" data-bs-toggle="collapse" href="#collapseItemBoxExist"
+                                            role="button" aria-expanded="false">
+                                            <i class="bi bi-chevron-up"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="desc collapse show" id="collapseItemBoxExist">
+                                    <form id="exist-form-mobile">
+                                        <div class="form-check">
+                                            <label for="existCheck" class="form-check-label">فقط کالاهای موجود</label>
+                                            <input
+                                                class="form-check-input"
+                                                type="checkbox"
+                                                name="existCheck"
+                                                value='true'
+                                                id="existCheck"
+                                                onclick="submitForm('exist-form-mobile')"
+                                                {{ request.GET.existCheck|yesno:'checked,' }}
+                                            >
+                                        </div>
+                                    </form>
+                                    <form id="second-hand-form-mobile" method="get" class="mt-3">
+                                        <div class="form-check">
+                                            <label for="second-hand" class="form-check-label">فقط کالاهای استوک</label>
+                                            <input
+                                                class="form-check-input"
+                                                type="checkbox"
+                                                name="secondHand"
+                                                value='true'
+                                                id="second-hand"
+                                                onclick="submitForm('second-hand-form-mobile')"
+                                                {{ request.GET.secondHand|yesno:'checked,' }}
+                                            >
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
+
+                            <div class="item-box bg-white shadow-box">
+                                <div class="title">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <h6 class="font-14">جستجو</h6>
+                                        <a class="btn border-0" data-bs-toggle="collapse" href="#collapseItemBoxSearch"
+                                            role="button" aria-expanded="false">
+                                            <i class="bi bi-chevron-up"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="desc collapse show" id="collapseItemBoxSearch">
+                                    <form action="{% url 'product:products' %}" method="get" class="search-form">
+                                        <div class="position-relative">
+                                            <input type="text" name="search" class="form-control font-14 rounded-pill text-muted py-3 border-muted bg-light" placeholder="نام محصول مورد نظر خود را وارد کنید">
+                                            <button type="submit" class="position-absolute top-50 translate-middle-y btn rounded-circle border-0" style="left: 5px;">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search-heart" viewBox="0 0 16 16">
+                                                    <path d="M6.5 4.482c1.664-1.673 5.825 1.254 0 5.018-5.825-3.764-1.664-6.69 0-5.018"></path>
+                                                    <path d="M13 6.5a6.47 6.47 0 0 1-1.258 3.844q.06.044.115.098l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1-.1-.115h.002A6.5 6.5 0 1 1 13 6.5M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11"></path>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end filter mobile -->
+
+            <div class="row">
+                <div class="col-lg-3 order-lg-1 order-2 d-none d-lg-block">
+                    <div class="item-boxs">
+                        <div class="item-box bg-white shadow-box">
+                            <div class="title">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <h6 class="font-14">محدوده قیمت</h6>
+                                    <a class="btn border-0" data-bs-toggle="collapse" href="#collapsePrice" role="button" aria-expanded="false">
+                                        <i class="bi bi-chevron-down"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="desc collapse show" id="collapsePrice">
+                                <form method="get" id="range-form">
+                                    <div class="form-group">
+                                        <input type="range" value="0" class="catRange" name="range">
+                                        <div class="show-more-btn mt-2 text-center">
+                                            <button onclick="rangeSubmit('range-form')" class="btn border-0 main-color-two-bg shadow-box waves-effect waves-light">اعمال فیلتر
+                                                <i class="bi bi-filter"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="item-box bg-white shadow-box">
+                            <div class="title">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <h6 class="font-14">موجودیت</h6>
+                                    <a class="btn border-0" data-bs-toggle="collapse" href="#collapseItemBoxExist"
+                                        role="button" aria-expanded="false">
+                                        <i class="bi bi-chevron-down"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="desc collapse show" id="collapseItemBoxExist">
+                                <form method="get" id="exist-form">
+                                    <div class="form-check">
+                                        <label for="existCheck" class="form-check-label">فقط کالاهای موجود</label>
+                                        <input
+                                            class="form-check-input"
+                                            type="checkbox"
+                                            name="existCheck"
+                                            value='true'
+                                            id="existCheck"
+                                            onclick="submitForm('exist-form')"
+                                            {{ request.GET.existCheck|yesno:'checked,' }}
+                                        >
+                                    </div>
+                                </form>
+                                <form method="get" id="second-hand-form" class="mt-3">
+                                    <div class="form-check">
+                                        <label for="second-hand" class="form-check-label">فقط کالاهای استوک</label>
+                                        <input
+                                            class="form-check-input"
+                                            type="checkbox"
+                                            name="secondHand"
+                                            value='true'
+                                            id="second-hand"
+                                            onclick="submitForm('second-hand-form')"
+                                            {{ request.GET.secondHand|yesno:'checked,' }}
+                                        >
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="item-box bg-white shadow-box">
+                            <div class="title">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <h6 class="font-14">جستجو</h6>
+                                    <a class="btn border-0" data-bs-toggle="collapse" href="#collapseItemBoxSearch"
+                                        role="button" aria-expanded="false">
+                                        <i class="bi bi-chevron-down"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="desc collapse show" id="collapseItemBoxSearch">
+                                <form action="{% url 'product:products' %}" method="get" class="search-form">
+                                    <div class="position-relative">
+                                        <input type="text" name="search" class="form-control font-14 rounded-pill text-muted py-3 border-muted bg-light" placeholder="نام محصول مورد نظر خود را وارد کنید">
+                                        <button type="submit" class="position-absolute top-50 translate-middle-y btn rounded-circle border-0" style="left: 5px;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search-heart" viewBox="0 0 16 16">
+                                                <path d="M6.5 4.482c1.664-1.673 5.825 1.254 0 5.018-5.825-3.764-1.664-6.69 0-5.018"></path>
+                                                <path d="M13 6.5a6.47 6.47 0 0 1-1.258 3.844q.06.044.115.098l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1-.1-.115h.002A6.5 6.5 0 1 1 13 6.5M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9 order-lg-2 order-1">
+                    <div class="content-box">
+                        {% if search_query %}
+                        <div class="filter-items shadow-box">
+                            <div class="d-flex align-items-center">
+                                <h5>نتایج جستجو</h5>
+                                <h6 class="ms-2">"{{ search_query }}"</h6>
+                            </div>
+                        </div>
+                        {% endif %}
+                        <div class="row">
+                        {% for product in products %}
+                            <div class="col-md-4 col-sm-6">
+                                <div class="product-box-item bg-white w-100">
+                                    <div class="hover">
+                                        <div class="hover-color">
+                                        {% for color in product.color.all %}
+                                            <span style="background-color: {{ color.hex_color }};" data-hint="{{ color.name }}" class="hint--left"></span>
+                                        {% endfor %}
+                                        </div>
+                                    </div>
+                                    <a href="{% url 'product:detail' product.slug %}" title="{{ product.english_name }}">
+                                        <div class="image text-center">
+                                        {% if product.images.count > 1 %}
+                                            <img src="{{ product.images.all.0.image.url }}" loading="lazy" alt="{{ product.slug }}-1" class="img-fluid one-image">
+                                            <img src="{{ product.images.all.1.image.url }}" loading="lazy" alt="{{ product.slug }}-2" class="img-fluid two-image">
+                                        {% else %}
+                                            <img src="{{ product.images.all.0.image.url }}" loading="lazy" alt="{{ product.slug }}" class="img-fluid">
+                                        {% endif %}
+                                        </div>
+                                    </a>
+                                    <div class="desc">
+                                        <div class="title">
+                                            <h6 class="title-fa def-color fw-bold text-overflow-2">{{ product.name }}</h6>
+                                            <h6 class="title-en text-muted text-overflow-2">{{ product.english_name }}</h6>
+                                        </div>
+                                        {% if product.availability %}
+                                            {% if product.disable_order %}
+                                            <div class="foot d-flex justify-content-between align-items-center">
+                                                <div class="d-flex align-items-center justify-content-center">
+                                                    <a class="btn border-0 shadow-box waves-effect waves-light" data-hint="برای ثبت سفارش تماس بگیرید" style="background-color: white" href="tel:{{ information.phone_number }}">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-emoji-neutral" viewBox="0 0 16 16">
+                                                          <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"></path>
+                                                          <path d="M4 10.5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 0-1h-7a.5.5 0 0 0-.5.5m3-4C7 5.672 6.552 5 6 5s-1 .672-1 1.5S5.448 8 6 8s1-.672 1-1.5m4 0c0-.828-.448-1.5-1-1.5s-1 .672-1 1.5S9.448 8 10 8s1-.672 1-1.5"></path>
+                                                        </svg>
+                                                        <span class="text-overflow fw-bold font-14">تماس بگیرید</span>
+                                                    </a>
+                                                </div>
+                                                <div class="price d-flex flex-column justify-content-end">
+                                                    {% if product.special_price %}
+                                                        <div>
+                                                            <span class="fw-bold font-18 def-color">{{ product.special_price|intcomma:False }}</span>
+                                                            <span class="badge main-color-two-bg rounded-pill">{{ product.discount_percent }}%</span>
+                                                        </div>
+                                                        <div class="d-flex justify-content-center align-items-center">
+                                                            <span
+                                                                class="text-muted font-14 text-decoration-line-through">{{ product.base_price|intcomma:False }}</span>
+                                                            <span class="text-muted font-14 ms-2">تومان</span>
+                                                        </div>
+                                                    {% else %}
+                                                        <div>
+                                                            <span class="fw-bold font-18 def-color">{{ product.base_price|intcomma:False }}</span>
+                                                            <span class="text-muted font-14 ms-2">تومان</span>
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            {% else %}
+                                            <div class="foot d-flex justify-content-between align-items-center">
+                                                <div class="d-flex align-items-center justify-content-center">
+                                                    <a href="{% url 'cart:add' product.id %}">
+                                                        <div data-hint="افزودن به سبد خرید" class="add hint--right">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-heart" viewBox="0 0 16 16">
+                                                                <path fill-rule="evenodd" d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0M14 14V5H2v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1M8 7.993c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132"></path>
+                                                            </svg>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                                <div class="price d-flex flex-column justify-content-end">
+                                                    {% if product.special_price %}
+                                                        <div>
+                                                            <span class="fw-bold font-18 def-color">{{ product.special_price|intcomma:False }}</span>
+                                                            <span class="badge main-color-two-bg rounded-pill">{{ product.discount_percent }}%</span>
+                                                        </div>
+                                                        <div class="d-flex justify-content-center align-items-center">
+                                                            <span
+                                                                class="text-muted font-14 text-decoration-line-through">{{ product.base_price|intcomma:False }}</span>
+                                                            <span class="text-muted font-14 ms-2">تومان</span>
+                                                        </div>
+                                                    {% else %}
+                                                        <div>
+                                                            <span class="fw-bold font-18 def-color">{{ product.base_price|intcomma:False }}</span>
+                                                            <span class="text-muted font-14 ms-2">تومان</span>
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                            {% endif %}
+                                        {% else %}
+                                            <div class="foot d-flex justify-content-center align-items-center">
+                                                <div class="d-flex align-items-center justify-content-center">
+                                                   <p class="main-color-two-color" style="font-weight: bold;"><i class="bi bi-emoji-frown"></i> محصول موجود نمی باشد</p>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        </div>
+                        {% if products.has_other_pages %}
+                        <div class="my-paginate my-4">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-center">
+                                 {% if products.has_previous %}
+                                        <li class="page-item">
+                                            <a class="page-link rounded-3" href="?page={{ products.previous_page_number }}" role="button">
+                                                <i class="bi bi-chevron-right"></i>
+                                            </a>
+                                        </li>
+                                    {% else %}
+                                        <li class="page-item disabled">
+                                            <a class="page-link rounded-3" href="#" role="button">
+                                                <i class="bi bi-chevron-right"></i>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+
+                                    {% for i in products.paginator.page_range %}
+                                        {% if products.number == i %}
+                                            <li class="page-item active">
+                                                <a class="page-link rounded-3" href="?page={{ i }}">{{ i }}</a>
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item">
+                                                <a class="page-link rounded-3" href="?page={{ i }}">{{ i }}</a>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if products.has_next %}
+                                        <li class="page-item">
+                                            <a class="page-link rounded-3" href="?page={{ products.next_page_number }}" role="button">
+                                                <i class="bi bi-chevron-left"></i>
+                                            </a>
+                                        </li>
+                                    {% else %}
+                                        <li class="page-item disabled">
+                                            <a class="page-link rounded-3" href="#" role="button">
+                                                <i class="bi bi-chevron-left"></i>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </nav>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end main content page -->
+
+    <script>
+        function submitForm(formId) {
+            const form = document.getElementById(formId);
+            if (form) {form.submit()}
+        }
+        function rangeSubmit(formId) {
+            const form = document.getElementById(formId);
+            const range_input = form.querySelector('input[name="range"]');
+            const inputValueObject = range_input.attributes.getNamedItem('value');
+            let hiddenInput = document.createElement("input");
+            hiddenInput.type = "hidden";
+            hiddenInput.name = "range";
+            form.appendChild(hiddenInput);
+            hiddenInput.value = inputValueObject.value;
+            range_input.remove();
+            form.submit()
+        }
+    </script>
+{% endblock %}

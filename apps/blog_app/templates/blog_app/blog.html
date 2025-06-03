@@ -1,0 +1,197 @@
+{% extends 'templates/base.html' %}
+{% load jalali_tags %}
+
+{% block header %}
+    <meta name="description" content="در بخش وبلاگ پرایم سیستم جدیدترین مقالات و بینش ها را کاوش کنید"/>
+    <meta name="robots" content="index, follow" />
+    <meta name="canonical" content="https://prime-system.ir/blogs/" />
+    <meta name="keywords" content="وبلاگ, مقالات تکنولوژی, تجهیزات الکترونیک, خرید آنلاین, بررسی محصولات, آموزش تعمیرات, نقد و بررسی, اخبار تکنولوژی, پرایم سیستم, راهنمای خرید, نکات فنی, محصولات الکترونیک, بلاگ فروشگاهی, راهنمای تعمیرات, تکنولوژی روز">    <title>وبلاگ</title>
+    <title>وبلاگ</title>
+{% endblock %}
+
+{% block main %}
+    <!-- bread croumb -->
+    <div class="content">
+        <div class="container-fluid">
+            <nav aria-label="breadcrumb" class="my-lg-0 my-2">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="{% url 'main:Home_page' %}" class="font-14 text-muted">خانه</a></li>
+                    <li class="breadcrumb-item active main-color-one-color font-14" aria-current="page">وبلاگ</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <!-- start main-data -->
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row gy-2">
+                <div class="col-lg-3 order-lg-1 order-2">
+                    <div class="item-boxs">
+                        <div class="item-box bg-white shadow-box">
+                            <div class="title">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <h6 class="font-14">جستجو</h6>
+                                    <a class="btn border-0" data-bs-toggle="collapse" href="#collapseItemBoxSearch" role="button" aria-expanded="false">
+                                        <i class="bi bi-chevron-down"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="desc collapse show" id="collapseItemBoxSearch">
+                                <form action="">
+                                    <div class="position-relative">
+                                        <input type="text" name="search"
+                                            class="form-control font-14 rounded-pill text-muted py-3 border-muted bg-light"
+                                            placeholder="نام محصول مورد نظر خود را وارد کنید">
+                                        <button type="submit"
+                                            class="position-absolute top-50 translate-middle-y btn rounded-circle border-0"
+                                            style="left: 5px;">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        {% if blog_categories %}
+                        <div class="item-box bg-white shadow-box">
+                            <div class="title">
+                                <h6 class="font-14">دسته بندی مقالات</h6>
+                            </div>
+                            <div class="desc">
+                                {% for category in blog_categories %}
+                                <a href="?category={{ category.slug }}">
+                                    <div class="d-flex align-items-center justify-content-between flex-wrap mb-3">
+                                        <div class="d-flex align-items-center">
+                                            <div class="box-icon"><i class="bi bi-tag"></i></div>
+                                            <span>{{ category.name }}</span>
+                                        </div>
+                                        <div>
+                                            <span class="fw-bold font-16">({{ category.blogs.count }})</span>
+                                        </div>
+                                    </div>
+                                </a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if blog_tags %}
+                        <div class="item-box bg-white shadow-box">
+                            <div class="title">
+                                <h6 class="font-14">برچسب مقالات</h6>
+                            </div>
+                            <div class="desc">
+                                <div class="d-flex align-items-center flex-wrap">
+                                    {% for tag in blog_tags %}
+                                    <div class="blog-tag">
+                                        <a href="?tag={{ tag.slug }}">{{ tag.name }}</a>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-lg-9 order-lg-2 order-1">
+                    {% if blog_list %}
+                    <div class="content-box">
+                        <div class="row gy-4">
+                            {% for blog in blog_list %}
+                            <div class="col-md-4 col-sm-6">
+                                <div class="shadow-box">
+                                    <div class="card shadow-inner border-muted">
+                                        <div class="image-blog text-center">
+                                            <img src="{{ blog.poster.poster.url }}" class="img-fluid rounded-2" loading="lazy" alt="{{ blog.slug }}">
+                                            <div class="blog-desc p-0 px-2 position-absolute bottom-0">
+                                                <div class="d-flex justify-content-between align-items-center my-2">
+                                                    <div class="like">
+                                                        <span class="icon">
+                                                            <i class="bi bi-person"></i>
+                                                        </span>
+                                                        <span class="counter font-12">{{ blog.author }}</span>
+                                                    </div>
+                                                    <div class="date">
+                                                        <span class="icon">
+                                                            <i class="bi bi-calendar-event"></i>
+                                                        </span>
+                                                        <span class="font-12">{{ blog.created_at|to_jalali:"%Y/%m/%d" }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <h5 class="card-title font-15 text-overflow-2">{{ blog.title }}</h5>
+                                            <p class="card-text text-overflow-3 font-13 text-justify">{{ blog.introduction|truncatewords:25 }}</p>
+                                            <a href="{% url 'blog:detail' blog.slug %}" class="span-primary rounded-3 font-14 shadow-md">مشاهده</a>
+                                            <div
+                                                class="my-card-footer mt-3 d-flex justify-content-center border-top pt-2 border-muted">
+                                                <div class="btn-group" role="group">
+                                                    <span class="btn border-0 bg-dark text-white btn-sm" style="border-top-right-radius:20px;border-bottom-right-radius:20px">{{ blog.category.name }}</span>
+                                                    <span class="btn border-0 bg-primary text-white btn-sm" style="border-top-left-radius:20px;border-bottom-left-radius:20px">{{ blog.comments.count }} دیدگاه</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% if blog_list.has_other_pages %}
+                        <div class="my-paginate my-4">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-center">
+                                    {% if blog_list.has_previous %}
+                                        <li class="page-item">
+                                            <a class="page-link rounded-3" href="?page={{ blogs_list.previous_page_number }}" role="button">
+                                                <i class="bi bi-chevron-right"></i>
+                                            </a>
+                                        </li>
+                                    {% else %}
+                                        <li class="page-item disabled">
+                                            <a class="page-link rounded-3" href="#" role="button">
+                                                <i class="bi bi-chevron-right"></i>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+
+                                    {% for i in blog_list.paginator.page_range %}
+                                        {% if blog_list.number == i %}
+                                            <li class="page-item active">
+                                                <a class="page-link rounded-3" href="?page={{ i }}">{{ i }}</a>
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item">
+                                                <a class="page-link rounded-3" href="?page={{ i }}">{{ i }}</a>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    {% if blog_list.has_next %}
+                                        <li class="page-item">
+                                            <a class="page-link rounded-3" href="?page={{ blogs_list.next_page_number }}" role="button">
+                                                <i class="bi bi-chevron-left"></i>
+                                            </a>
+                                        </li>
+                                    {% else %}
+                                        <li class="page-item disabled">
+                                            <a class="page-link rounded-3" href="#" role="button">
+                                                <i class="bi bi-chevron-left"></i>
+                                            </a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </nav>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end main-data -->
+
+{% endblock %}

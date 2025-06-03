@@ -1,0 +1,179 @@
+{% extends 'templates/base.html' %}
+
+{% block header %}
+    <meta name="description" content="بخش ارتباط و راه هایی ارتباطی با فروشگاه تجهیزات الکترونیک پرایم سیستم"/>
+    <meta name="robots" content="index, follow" />
+    <meta name="canonical" content="https://prime-system.ir/contact-us/" />
+    <meta name="keywords" content="ارتباط با ما, تماس با پرایم سیستم, اطلاعات تماس, پشتیبانی مشتریان, شماره تماس, ایمیل پشتیبانی, ارسال پیام, پشتیبانی آنلاین, خدمات مشتریان, آدرس فروشگاه, تجهیزات الکترونیک, تماس با فروشگاه, فرم تماس, پشتیبانی فنی">    <title>ارتباط با ما</title>
+    <title>ارتباط با ما</title>
+{% endblock %}
+
+{% block main %}
+    <!-- bread croumb -->
+    <div class="content">
+        <div class="container-fluid">
+            <nav aria-label="breadcrumb" class="my-lg-0 my-2">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="{% url 'main:Home_page' %}" class="font-14 text-muted">خانه</a></li>
+                    <li class="breadcrumb-item active main-color-one-color font-14" aria-current="page">تماس با ما</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <!-- start main-data -->
+    <div class="content">
+        <div class="container-fluid">
+            <div class="content-box">
+                <div class="contact-us">
+                    <div>
+                        <h3 class="h3 main-title">تماس با ما</h3>
+                    </div>
+                    <div class="row gy-3 my-3">
+                        {% if information.telegram_id %}
+                            <div class="col-md-4">
+                                <div class="contact-box  p-4 bg-light shadow-inner">
+                                    <div class="icon text-center">
+                                        <i class="bi bi-chat-dots fs-1"></i>
+                                    </div>
+                                    <div class="title my-3">
+                                        <h4 class="h4">چت آنلاین</h4>
+                                    </div>
+                                    <div class="desc">
+                                        <p class="text-overflow-2 font-14">
+                                            تمامی سوالاتتان را از پشتیبانان ما به صورت ۲۴ ساعته در تلگرام بپرسید
+                                        </p>
+                                    </div>
+                                    <div class="link mt-3">
+                                        <a href="https://t.me/{{ information.telegram_id }}" class="btn border-0 main-color-one-bg waves-effect waves-light">بزن بریم</a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% if information.call_center %}
+                            <div class="col-md-4">
+                                <div class="contact-box  p-4 bg-light shadow-inner">
+                                    <div class="icon text-center">
+                                        <i class="bi bi-phone fs-1"></i>
+                                    </div>
+                                    <div class="title my-3">
+                                        <h4 class="h4">تماس تلفنی</h4>
+                                    </div>
+                                    <div class="desc">
+                                        <p class="text-overflow-2 font-14">
+                                            با متخصصین و مشاورین ما برای پاسخ به سوالات خود و یا دریافت مشاوره تماس بگیرید
+                                        </p>
+                                    </div>
+                                    <div class="link mt-3">
+                                        <a href="tel:021{{ information.call_center }}" class="btn border-0 main-color-one-bg waves-effect waves-light">بزن
+                                            بریم</a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        {% if information.email %}
+                            <div class="col-md-4">
+                                <div class="contact-box  p-4 bg-light shadow-inner">
+                                    <div class="icon text-center">
+                                        <i class="bi bi-envelope fs-1"></i>
+                                    </div>
+                                    <div class="title my-3">
+                                        <h4 class="h4">ارسال ایمیل</h4>
+                                    </div>
+                                    <div class="desc">
+                                        <p class="text-overflow-2 font-14">
+                                            درصورت تمایل و برای شروع گفت و گویی تخصصی تر میتوانید به ما ایمیل بزنید
+                                        </p>
+                                    </div>
+                                    <div class="link mt-3">
+                                        <a href="mailto:{{ information.email }}" class="btn border-0 main-color-one-bg waves-effect waves-light">بزن
+                                            بریم</a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div style="height: 550px">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3239.782828111556!2d51.40452872709556!3d35.706961488158186!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3f8e011237847dcd%3A0xcfed7552490962f5!2sNoor-e%20Tehran%20Shopping%20Center!5e0!3m2!1sen!2sus!4v1685219035505!5m2!1sen!2sus" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                    <div class="comment-form py-20">
+                        <h6 class="fs-3 text-center">فرم تماس با پشتیبانی</h6>
+                        {% if request.user.is_authenticated %}
+                            <p class="font-14 text-muted mt-2 text-center">
+                                اگر نظری ، انتقادی ، پیشنهادی و یا سوالی داری از طریق فرم پایین به ما بگو!
+                            </p>
+                            <div class="row justify-content-center">
+                                <div class="col-md-8">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-floating">
+                                                {{ form.message }}
+                                                <label for="floatingTextarea2">متن نظر!</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <button id="submitTicket" class="btn border-0 w-100 main-color-three-bg my-3 mx-auto d-block waves-effect waves-light">ثبت نظر</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                            <p class="font-14 main-color-two-color mt-2 text-center">
+                                برای ارسال تیکت لطفا ابتدا<a style="text-decoration: underline" href="{% url 'account:login' %}"> وارد حساب کاربری</a> خود شوید !
+                            </p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end main-data -->
+    <script>
+        const submitTicket = document.getElementById('submitTicket');
+        submitTicket.addEventListener('click', () => {
+            let textArea =  document.getElementById('floatingTextarea2');
+            if (textArea.value) {
+                $.ajax({
+                    url: "{% url 'contact_us:Contact_page' %}",
+                    type: 'POST',
+                    data: {
+                        'message': textArea.value,
+                    },
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+                    },
+                    success: function (response) {
+                        if (response.status === 200){
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'ارسال شد',
+                                text: 'تیکت شما با موفقیت ثبت شد. در اسرع وقت به شما پاسخ داده خواهد شد.',
+                                confirmButtonColor: '#3085d6',
+                            });
+                        }
+                        else if (response.status === 400) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'خطا',
+                                text: response.error_message,
+                                confirmButtonColor: '#3085d6',
+                            });
+                        }
+                    },
+                    error: function (err) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: err.code,
+                            text: 'خطایی رخ داده است! وضعیت اینترنت خود را بررسی کنید و دوباره امتحان کنید. در صورت برطرف نشدن مشکل با پشتیبانی تماس بگیرید.',
+                            confirmButtonColor: '#3085d6',
+                        })
+                        console.log(err)
+                    }
+                })
+                textArea.value = '';
+            } else {
+                textArea.focus();
+            }
+        })
+    </script>
+{% endblock %}

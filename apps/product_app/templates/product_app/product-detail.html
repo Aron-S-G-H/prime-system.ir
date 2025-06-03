@@ -1,0 +1,781 @@
+{% extends 'templates/base.html' %}
+{% load static %}
+{% load jalali_tags %}
+{% load humanize %}
+
+{% block header %}
+    <meta name="description" content="{{ product.meta_description }}"/>
+    <meta name="robots" content="index, follow" />
+    <meta name="canonical" content="https://prime-system.ir/productss/{{ product.slug }}" />
+    <meta name="keywords" content="{{ product.meta_keyword }}"/>
+    <title>{{ product.name }}</title>
+{% endblock %}
+
+{% block main %}
+    <!-- bread croumb -->
+    <div class="content">
+        <div class="container-fluid">
+            <div class="content-box">
+                <nav aria-label="breadcrumb" class="my-lg-0 my-2">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item"><a href="{% url 'main:Home_page' %}" class="font-14 text-muted">خانه</a></li>
+                        <li class="breadcrumb-item"><a href="{% url 'product:products' %}" class="font-14 text-muted">فروشگاه</a></li>
+                        <li class="breadcrumb-item">
+                            <a href="{% url 'product:general-category' product.category.general_category.slug %}" class="font-14 text-muted">{{ product.category.general_category.title }}</a>
+                        </li>
+                        {% if product.category.parent_category %}
+                            <li class="breadcrumb-item">
+                                <a href="{% url 'product:category' product.category.parent_category.slug %}" class="font-14 text-muted">{{ product.category.parent_category.title }}</a>
+                            </li>
+                        {% endif %}
+                        <li class="breadcrumb-item"><a href="{% url 'product:category' product.category.slug %}" class="font-14 text-muted">{{ product.category.title }}</a></li>
+                        <li class="breadcrumb-item active main-color-one-color font-14" aria-current="page">{{ product.name }}</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <!-- start meta product -->
+    <div class="content">
+        <div class="container-fluid">
+            <div class="content-box">
+                <div class="row gy-3">
+                    <div class="col-lg-4">
+                        {% if product.special_price %}
+                            <div class="amazing-timer" style="padding-bottom: 15px;">
+                                <div class="d-flex align-items-center flex-wrap">
+                                    <div class="d-grid gap-1">
+                                        <span class="font-14">پیشنـهاد شگفت انگیـز</span>
+                                        <span class="font-12 text-muted">فرصت باقی مانده</span>
+                                    </div>
+                                    <div class="flex-grow-1 text-end">
+                                        <div class='countdown' data-id="{{ product.id }}" data-url="{% url 'main:countdown_end' %}" data-date="{{ product.special_price_time.date|date:'Y-m-d' }}" data-time="{{ product.special_price_time.time|time:'H:i' }}"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        <div class="pro_gallery">
+                            {% if product.second_hand %}
+                                <div class="special-label">
+                                    <img src="{% static 'image/stock.svg' %}" alt="second-hand">
+                                </div>
+                            {% endif %}
+                            <div class="icon-product-box">
+                                <div class="icon-product-box-item hint--right" data-bs-toggle="modal" data-bs-target="#shareModal" data-hint="اشتراک گذاری">
+                                    <i class="bi bi-share-fill"></i>
+                                </div>
+                            </div>
+                            <div style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff" class="swiper product-gallery">
+                                <div class="swiper-wrapper" title="برای بزرگنمایی تصویر دابل کلیک کنید">
+                                    {% for image in product.images.all %}
+                                        <div class="swiper-slide">
+                                            <div class="swiper-zoom-container">
+                                                <img class="img-fluid" src="{{ image.image.url }}" alt="product-main-image-{{ image.id }}" />
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="swiper-button-next d-none d-lg-flex"></div>
+                                <div class="swiper-button-prev d-none d-lg-flex"></div>
+                                <div class="swiper-pagination d-none d-lg-block"></div>
+                            </div>
+                            <div class="swiper product-gallery-thumb">
+                                <div class="swiper-wrapper">
+                                    {% for image in product.images.all %}
+                                        <div class="swiper-slide">
+                                            <img class="img-fluid" src="{{ image.image.url }}" alt="product-swiper-image-{{ image.id }}" />
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex my-3">
+                            <i class="bi bi-info-circle me-1"></i>
+                            <span class="me-1 font-14">تمامی عکس ها تصاویر واقعی محصول هستن</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="product-meta">
+                            <nav aria-label="breadcrumb" class="mb-3">
+                                <ol class="breadcrumb mb-0">
+                                    <li class="breadcrumb-item active main-color-one-color font-16" aria-current="page">{{ product.category.general_category.title }}</li>
+                                    {% if product.category.parent_category %}
+                                    <li class="breadcrumb-item active main-color-one-color font-16" aria-current="page">{{ product.category.parent_category.title }}</li>
+                                    {% endif %}
+                                    <li class="breadcrumb-item active main-color-one-color font-16" aria-current="page">{{ product.category.title }}</li>
+                                </ol>
+                            </nav>
+                            <div class="title mt-md-0 mt-3">
+                                <h1 class="font-16 mb-2">{{ product.name }}</h1>
+                                <p class="font-12 text-muted font-en">{{ product.english_name }}</p>
+                                <div class="d-flex align-items-center pb-2">
+                                    <div class="star">
+                                        {% for i in range %}
+                                            {% if i <= product.average_rating %}
+                                                <i class="bi bi-star-fill"></i>
+                                            {% else %}
+                                                <i class="bi bi-star"></i>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                    <div class="ms-3">
+                                        <a href="#prodesc" data-bs-target="#productComment-pane" role="button" class="main-color-one-color font-14">
+                                            <span>{{ product.comments.count }}</span>
+                                            <span>دیدگاه</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-feature py-2">
+                                {% if product.color.exists %}
+                                <div class="pf_color">
+                                    <p class="font-16 my-3 font-weight-bolder">رنگ : <span id="color-name">{{ product.color.first.name }}</span></p>
+                                    <div class="color-box">
+                                        {% for color in product.color.all %}
+                                            <div class="color-box-item {% if forloop.counter == 1 %}active{% endif %}" data-toggle="tooltip" data-hint="{{ color.name }}">
+                                                <span class="color hint--top" style="background-color: {{ color.hex_color }};"></span>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% endif %}
+                                <nav class="navbar">
+                                    <ul class="navbar-nav">
+                                        {% for attribute in product.attributes.all %}
+                                            <li class="nav-item pb-1 font-14">
+                                                <span class="nav-title me-1 fw-bold">{{ attribute.attribute }}:</span>
+                                                <span class="nav-title-desc text-muted">{{ attribute.value }}</span>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="se-cart">
+                            <div class="se-cart-item">
+                                <i class="bi bi-shield-check me-1 font-20"></i>
+                                <p class="d-inline font-16 fw-normal mb-0">گارانتی اصالت و سلامت فیزیکی کالا</p>
+                            </div>
+                            <div class="se-cart-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <i class="bi bi-patch-check font-18 me-2"></i>
+                                    <span class="font-12">شناسه محصول</span>
+                                </div>
+                                <div class="price d-flex flex-column justify-content-end">
+                                    <div>
+                                        <span class="fw-bold font-18 def-color">{{ product.id|add:1000 }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="se-cart-item">
+                                <i class="bi bi-house me-1 font-20"></i>
+                                <p class="d-inline fw-normal font-16 mb-0">موجود در انبار {{ product.quantity }} عدد</p>
+                            </div>
+                            <div class="se-cart-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <i class="bi bi-cash-coin font-18 me-2"></i>
+                                    <span class="font-12">قیمت محصول</span>
+                                </div>
+                                <div class="price d-flex flex-column justify-content-end">
+                                    {% if product.availability %}
+                                        {% if product.special_price %}
+                                            <div>
+                                                <span class="fw-bold font-18 def-color">{{ product.special_price|intcomma:False }}</span>
+                                                <span class="badge main-color-two-bg rounded-pill">{{ product.discount_percent }}%</span>
+                                            </div>
+                                            <div class="d-flex justify-content-center align-items-center">
+                                                <span class="text-muted font-14 text-decoration-line-through">{{ product.base_price|intcomma:False }}</span>
+                                                <span class="text-muted font-14 ms-2">تومان</span>
+                                            </div>
+                                        {% else %}
+                                            <div class="d-flex justify-content-center align-items-center">
+                                                <span class="fw-bold font-18 def-color">{{ product.base_price|intcomma:False }}</span>
+                                                <span class="font-14 ms-2">تومان</span>
+                                            </div>
+                                        {% endif %}
+                                    {% else %}
+                                        <div class="d-flex justify-content-center align-items-center">
+                                            <span class="fw-bold font-18 def-color">0</span>
+                                            <span class="font-14 ms-2">تومان</span>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="se-cart-item">
+                                {% if product.availability %}
+                                    {% if product.disable_order %}
+                                    <button class="btn w-100 d-block border-0 btn-warning rounded-3 py-3 font-16 waves-effect waves-light">
+                                        <i class="bi bi-emoji-neutral"></i> برای ثبت سفارش تماس بگیرید
+                                    </button>
+                                    {% else %}
+                                    <button onclick="addToCart()" class="btn w-100 d-block border-0 main-color-one-bg rounded-3 py-3 font-16 waves-effect waves-light">
+                                        افزودن به سبد خرید <i class="bi bi-emoji-heart-eyes"></i>
+                                    </button>
+                                    <div class="mt-3 d-flex justify-content-center counter_product">
+                                        <div>
+                                            <input id="quantity" aria-label="quantity" type="text" name="count" class="counter" value="1">
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                {% else %}
+                                    <button class="btn w-100 d-block border-0 btn-secondary rounded-3 py-3 font-16 waves-effect waves-light">
+                                        <i class="bi bi-emoji-frown"></i> محصول موجود نمی باشد
+                                    </button>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="d-flex main-color-two-bg border rounded-3 align-items-center justify-content-between mt-3 px-3 py-2">
+                            <div>
+                                <i class="bi bi-info-circle"></i>
+                                <span class="font-14" style="font-weight: bold;">با توجه به نوسانات قیمت ارز ، لطفا قبل از نهایی کردن خرید خود تماس بگیرید</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="shop-feature">
+                            <nav class="navbar">
+                                <ul class="navbar-nav justify-content-md-between justify-content-center">
+                                    <li class="nav-item d-flex align-items-center">
+                                        <img src="{% static 'image/express-delivery.svg' %}" alt="express-delivery">
+                                        <span>تحویل سریع</span>
+                                    </li>
+                                    <li class="nav-item d-flex align-items-center">
+                                        <img src="{% static 'image/support.svg' %}" alt="support">
+                                        <span>24 ساعته 7 روز هفته</span>
+                                    </li>
+                                    <li class="nav-item d-flex align-items-center">
+                                        <img src="{% static 'image/cash-on-delivery.svg' %}" alt="cash-on-delivery">
+                                        <span>خرید مطمئن با بهترین قیمت</span>
+                                    </li>
+                                    <li class="nav-item d-flex align-items-center">
+                                        <img src="{% static 'image/days-return.svg' %}" alt="days-return">
+                                        <span>7 روز مهلت تست کالا</span>
+                                    </li>
+                                    <li class="nav-item d-flex align-items-center">
+                                        <img src="{% static 'image/original-products.svg' %}" alt="original-products">
+                                        <span>ضمانت اصالت و سلامت کالا</span>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end meta product -->
+
+    <!-- start product desc -->
+    <div class="content">
+        <div class="container-fluid">
+            <div class="content-box">
+                <div class="product-descs" id="prodesc">
+                    <div class="product-desc">
+                        <div class="product-desc-tab">
+                            <ul class="nav" id="productTab" role="tablist">
+                                {% if product.introduction %}
+                                <li class="nav-item">
+                                    <button class="active waves-effect waves-light" id="productDescLess" data-bs-toggle="tab" data-bs-target="#productDescLess-pane" role="tab" type="button" aria-selected="true">
+                                        <a href="#prodesc"><i class="bi bi-file-richtext"></i> معرفی</a>
+                                    </button>
+                                </li>
+                                {% endif %}
+                                <li class="nav-item">
+                                    <button class=" waves-effect waves-light" id="productDesc" data-bs-toggle="tab" data-bs-target="#productDesc-pane" role="tab" type="button" aria-selected="true">
+                                        <a href="#prodesc"><i class="bi bi-file-text"></i>توضیحات</a>
+                                    </button>
+                                </li>
+                                {% if product.specification %}
+                                <li class="nav-item">
+                                    <button class=" waves-effect waves-light" id="productTable" data-bs-toggle="tab" data-bs-target="#productTable-pane" role="tab" type="button" aria-selected="false">
+                                        <a href="#prodesc"><i class="bi bi-grid"></i> مشخصات فنی</a>
+                                    </button>
+                                </li>
+                                {% endif %}
+                                <li class="nav-item">
+                                    <button class=" waves-effect waves-light" id="productComment" data-bs-toggle="tab" data-bs-target="#productComment-pane" role="tab" type="button" aria-selected="false">
+                                        <a href="#prodesc"><i class="bi bi-chat-quote"></i>نظرات</a>
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="product-desc-tab-content">
+                            <div class="tab-content" id="productTabContent">
+                                {% if product.introduction %}
+                                <div class="tab-pane fade show active product-desc-less-contents" id="productDescLess-pane">
+                                    <div class="product-desc-content">
+                                        <div class="read-more-wrap">
+                                            <h2 class="title gold mb-2">معرفی محصول</h2>
+                                            {{ product.introduction|safe }}
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                                <div class="tab-pane fade product-desc-contents" id="productDesc-pane">
+                                    <div class="product-desc-content">
+                                        <div class="read-more-wrap">
+                                            {{ product.description|safe }}
+                                        </div>
+                                    </div>
+                                </div>
+                                {% if product.specification %}
+                                <div class="tab-pane fade" id="productTable-pane">
+                                    <div class="tab-pane fade active show" id="productTable-pane" role="tabpanel"
+                                        aria-labelledby="#productTable">
+                                        <h4 class="fw-bold mt-3 text-muted-2">مشخصات فنی</h4>
+                                        <span class="text-muted font-14 mt-2 d-block">{{ product.english_name }}</span>
+                                        {% for key, value in product.specification.items %}
+                                        <div class="box_list mt-4">
+                                            <p class="title">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-left-fill" viewBox="0 0 16 16">
+                                                    <path d="m3.86 8.753 5.482 4.796c.646.566 1.658.106 1.658-.753V3.204a1 1 0 0 0-1.659-.753l-5.48 4.796a1 1 0 0 0 0 1.506z"></path>
+                                                </svg>
+                                                {{ key }}
+                                            </p>
+                                            <section>
+                                                <ul class="param_list list-inline">
+                                                    <div class="container-fluid">
+                                                        {% for key, value in value.items %}
+                                                        <div class="row ps-md-2">
+                                                            <li class="list-inline-item col-md-3 pe-md-1 pe-md-3 p-0 m-0">
+                                                                <div class="box_params_list">
+                                                                    <p class="block border_right_custom1">{{ key }}</p>
+                                                                </div>
+                                                            </li>
+                                                            <li class="list-inline-item col-md-8 p-0 m-0">
+                                                                <div class="box_params_list">
+                                                                    <p class="block border_right_custom2">{{ value }}</p>
+                                                                </div>
+                                                            </li>
+                                                        </div>
+                                                        {% endfor %}
+                                                    </div>
+                                                </ul>
+                                            </section>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% endif %}
+                                <div class="tab-pane fade product-comment-content" id="productComment-pane">
+                                    <div class="comment-form py-20">
+                                        <h6 class="font-16">نظرت در مورد این محصول چیه؟</h6>
+                                        {% if not request.user.is_authenticated %}
+                                            <p class="font-14 main-color-two-color mt-2">برای ثبت نظر، لطفا ابتدا <a style="text-decoration: underline" href="{% url 'account:login' %}">وارد حساب کاربری</a> خود شوید !</p>
+                                        {% else %}
+                                            <p class="font-14 text-muted mt-2">برای ثبت نظر، از طریق دکمه ثبت نظر اقدام نمایید، نظر شما به ما در بهبود کیفیت مطالب کمک فراوان میکند.</p>
+                                            <div class="row gy-4">
+                                                <div class="col-md-4">
+                                                    <div class="product-rateing position-sticky top-0">
+                                                        <div class="row gy-2 align-items-center">
+                                                            <div class="number">
+                                                                <p class="font-14 text-muted">متوسط امتیاز ها</p>
+                                                                <h2>{{ product.average_rating }}</h2>
+                                                                <div class="star">
+                                                                    {% for i in '12345' %}
+                                                                        {% if forloop.counter <= product.average_rating %}
+                                                                            <i class="bi bi-star-fill"></i>
+                                                                        {% else %}
+                                                                            <i class="bi bi-star"></i>
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <div class="form-group">
+                                                                <label for="commentRating" class="my-3">امتیاز شما</label>
+                                                                <fieldset class="rating">
+                                                                    <input type="radio" id="star5" name="rating" value="5" required />
+                                                                    <label for="star5">5 stars</label>
+                                                                    <input type="radio" id="star4" name="rating" value="4" required />
+                                                                    <label for="star4">4 stars</label>
+                                                                    <input type="radio" id="star3" name="rating" value="3" required />
+                                                                    <label for="star3">3 stars</label>
+                                                                    <input type="radio" id="star2" name="rating" value="2" required />
+                                                                    <label for="star2">2 stars</label>
+                                                                    <input type="radio" id="star1" name="rating" value="1" required />
+                                                                    <label for="star1">1 star</label>
+                                                                </fieldset>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <div class="form-floating">
+                                                                <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 150px"></textarea>
+                                                                <label for="floatingTextarea2">متن نظر!</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group mt-3">
+                                                                <label for="tags-pos" class="text-success mb-2">نقاط قوت</label>
+                                                                <input name="tags-pos" id="tags-pos" class="commentTags form-control" placeholder="با کلید اینتر اضافه کنید">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group mt-3">
+                                                                <label for="tags-neg" class="text-danger mb-2">نقاط ضعف</label>
+                                                                <input name="tags-neg" id="tags-neg" class="commentTags form-control" placeholder="با کلید اینتر اضافه کنید">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <button id="submit-comment" class="btn border-0 w-100 main-color-three-bg my-3 mx-auto d-block waves-effect waves-light">ثبت نظر</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    {% if product.comments.all %}
+                                        {% for comment in product.comments.all %}
+                                            <div class="comment bg-light shadow-inner mb-4">
+                                                <div class="title">
+                                                    <div class="row align-items-center">
+                                                        <div class="col-sm-10">
+                                                            <div class="d-flex align-items-center">
+                                                                <div class="avatar p-2 bg-white shadow-box rounded-circle">
+                                                                    <img src="{% static 'image/user-profile.png' %}" alt="user-profile" class="img-fluid rounded-circle">
+                                                                </div>
+                                                                <div class="d-flex flex-wrap align-items-center ms-2">
+                                                                    <h6 class="text-muted font-14">{{ comment.user }}</h6>
+                                                                    <h6 class="text-muted font-14 ms-2">{{ comment.created_at|to_jalali:"%Y/%m/%d" }}</h6>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-2">
+                                                            <div class="d-flex star justify-content-end">
+                                                                {% for i in range %}
+                                                                    {% if i <= comment.rating %}
+                                                                        <i class="bi bi-star-fill"></i>
+                                                                    {% else %}
+                                                                        <i class="bi bi-star"></i>
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="desc py-3">
+                                                    <p class="font-14 text-muted">{{ comment.text }}</p>
+                                                </div>
+                                                <div class="foot">
+                                                    <div class="row align-items-center">
+                                                        {% if comment.speciality %}
+                                                        <div class="col-md-8">
+                                                            <div class="comment-rates">
+                                                                {% for key, value in comment.speciality.items %}
+                                                                <div class="{% if key == 'نقاط قوت' %}positive{% else %}negitive mt-3{% endif %} rounded-4 py-md-0 py-3">
+                                                                    <div class="d-flex align-items-center flex-wrap">
+                                                                        <h6 class="font-14">{{ key }}</h6>
+                                                                        <nav class="navbar navbar-expand positive-nav">
+                                                                            <ul class="navbar-nav flex-wrap">
+                                                                                {% for item in value %}
+                                                                                <li class="nav-item ps-md-2 ps-0">
+                                                                                    <span class="nav-link font-14">{{ item }}</span>
+                                                                                </li>
+                                                                                {% endfor %}
+                                                                            </ul>
+                                                                        </nav>
+                                                                    </div>
+                                                                </div>
+                                                                {% endfor %}
+                                                            </div>
+                                                        </div>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end product desc -->
+
+    {% if similar_products %}
+    <div class="product-box py-20">
+        <div class="container-fluid">
+            <div class="parent">
+                <div class="content-title">
+                    <div class="item">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-box-seam" viewBox="0 0 16 16">
+                            <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2l-2.218-.887zm3.564 1.426L5.596 5 8 5.961 14.154 3.5l-2.404-.961zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z"></path>
+                        </svg>
+                        <h5 class="title">محصولات مرتبط</h5>
+                    </div>
+                    <div class="item">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-box-arrow-in-left" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M10 3.5a.5.5 0 0 0-.5-.5h-8a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5v-2a.5.5 0 0 1 1 0v2A1.5 1.5 0 0 1 9.5 14h-8A1.5 1.5 0 0 1 0 12.5v-9A1.5 1.5 0 0 1 1.5 2h8A1.5 1.5 0 0 1 11 3.5v2a.5.5 0 0 1-1 0v-2z"></path>
+                            <path fill-rule="evenodd" d="M4.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H14.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"></path>
+                        </svg>
+                        <a href="{% url 'product:general-category' product.category.general_category.slug %}">
+                            <h5 class="title">مشاهده همه</h5>
+                        </a>
+                    </div>
+                </div>
+                <div class="swiper free-mode" id="product-box">
+                    <div class="swiper-wrapper">
+                        {% for product in similar_products %}
+                        <div class="swiper-slide">
+                            <div class="product-box-item bg-white w-100">
+                                <div class="hover">
+                                    <div class="hover-color">
+                                        {% for color in product.color.all %}
+                                            <span style="background-color: {{ color.hex_color }};" data-hint="{{ color.name }}" class="hint--left"></span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <a href="{% url 'product:detail' product.slug %}" title="{{ product.english_name }}">
+                                    <div class="image text-center">
+                                        {% if product.images.count > 1 %}
+                                            <img src="{{ product.images.all.0.image.url }}" loading="lazy" alt="{{ product.slug }}-1" class="img-fluid one-image">
+                                            <img src="{{ product.images.all.1.image.url }}" loading="lazy" alt="{{ product.slug }}-2" class="img-fluid two-image">
+                                        {% else %}
+                                            <img src="{{ product.images.all.0.image.url }}" loading="lazy" alt="{{ product.slug }}" class="img-fluid">
+                                        {% endif %}
+                                    </div>
+                                </a>
+                                <div class="desc">
+                                    <div class="title">
+                                        <h6 class="title-fa def-color fw-bold text-overflow-2">{{ product.name }}</h6>
+                                        <h6 class="title-en text-muted text-overflow-2">{{ product.english_name }}</h6>
+                                    </div>
+                                    <div class="foot d-flex justify-content-between align-items-center">
+                                        {% if product.disable_order %}
+                                        <div class="d-flex align-items-center justify-content-center me-3">
+                                            <a class="btn border-0 shadow-box waves-effect waves-light" role="button" data-hint="برای ثبت سفارش تماس بگیرید" style="background-color: white" href="tel:{{ information.phone_number }}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-emoji-neutral" viewBox="0 0 16 16">
+                                                  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"></path>
+                                                  <path d="M4 10.5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 0-1h-7a.5.5 0 0 0-.5.5m3-4C7 5.672 6.552 5 6 5s-1 .672-1 1.5S5.448 8 6 8s1-.672 1-1.5m4 0c0-.828-.448-1.5-1-1.5s-1 .672-1 1.5S9.448 8 10 8s1-.672 1-1.5"></path>
+                                                </svg>
+                                                <span class="text-overflow fw-bold font-14">تماس بگیرید</span>
+                                            </a>
+                                        </div>
+                                        {% else %}
+                                        <div class="d-flex align-items-center justify-content-center">
+                                            <a href="{% url 'cart:add' product.id %}" role="button" aria-label="add to cart">
+                                                <div data-hint="افزودن به سبد خرید" class="add hint--right">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-heart" viewBox="0 0 16 16">
+                                                        <path fill-rule="evenodd" d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0M14 14V5H2v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1M8 7.993c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132"></path>
+                                                    </svg>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        {% endif %}
+                                        <div class="price d-flex flex-column justify-content-end">
+                                            {% if product.special_price %}
+                                                <div>
+                                                    <span class="fw-bold font-18 def-color">{{ product.special_price|intcomma:False }}</span>
+                                                    <span class="badge main-color-two-bg rounded-pill">{{ product.discount_percent }}%</span>
+                                                </div>
+                                                <div class="d-flex justify-content-center align-items-center">
+                                                    <span
+                                                        class="text-muted font-14 text-decoration-line-through">{{ product.base_price|intcomma:False }}</span>
+                                                    <span class="text-muted font-14">تومان</span>
+                                                </div>
+                                            {% else %}
+                                                <div>
+                                                    <span class="fw-bold font-18 def-color">{{ product.base_price|intcomma:False }}</span>
+                                                    <span class="text-muted font-14">تومان</span>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="swiper-pagination"></div>
+                    <div class="swiper-button-next d-sm-flex d-none"></div>
+                    <div class="swiper-button-prev d-sm-flex d-none"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    <!-- end product box -->
+
+    <!-- modal shahre -->
+    <div class="share-modal">
+        <div class="modal fade" id="shareModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h6 class="modal-title" id="exampleModalLabel">اشتراک گذاری</h6>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h4 class="font-18 my-3">این کالا را با دوستان خود به اشتراک بگذارید!</h4>
+                        <button id="copy-btn" class="btn d-block border text-center w-100"> <i class="bi bi-clipboard2-plus me-1"></i>کپی کردن لینک</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end modal share-->
+    <script>
+        // COMMENT SECTION - START
+        {% if request.user.is_authenticated %}
+            let ratingValue = 5;
+            const textArea = document.getElementById('floatingTextarea2');
+            const positiveTag = document.getElementById('tags-pos');
+            const negativeTag = document.getElementById('tags-neg');
+            const submitComment = document.getElementById('submit-comment');
+            document.querySelectorAll('input[name="rating"]').forEach((radio) => {
+                radio.addEventListener('change', (Event) => {
+                    ratingValue = Event.target.value;
+                })
+            });
+            function toggleFormState(isDisabled) {
+                textArea.disabled = isDisabled;
+                submitComment.disabled = isDisabled;
+                positiveTag.disabled = isDisabled;
+                negativeTag.disabled = isDisabled;
+                if (!isDisabled) {
+                    textArea.value = '';
+                    positiveTag.value = '';
+                    negativeTag.value = '';
+                }
+            }
+            submitComment.addEventListener('click', () => {
+                if (textArea.value && ratingValue > 0) {
+                    toggleFormState(true);
+                    let data = {'text': textArea.value, 'rating': ratingValue};
+                    if (positiveTag.value) {
+                        let positiveValue = JSON.parse(positiveTag.value);
+                        data['positiveValue'] = positiveValue.map(item => item.value);
+                    }
+                    if (negativeTag.value) {
+                        let negativeValue = JSON.parse(negativeTag.value);
+                        data['negativeValue'] = negativeValue.map(item => item.value);
+                    }
+                    $.ajax({
+                        url: '{% url "product:detail" product.slug %}',
+                        type: 'POST',
+                        data: JSON.stringify(data),
+                        beforeSend: function (xhr) {
+                            xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+                        },
+                        success: function (response){
+                            if (response.status === 200) {
+                                Swal.fire({
+                                    position: 'top-start',
+                                    icon: 'success',
+                                    title: 'نظر شما با موفقیت ثبت شد',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                }).then(() => {
+                                    window.location.reload();
+                                })
+                            } else if (response.status === 400) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    text: response.error_message,
+                                    confirmButtonColor: '#3085d6',
+                                });
+                                textArea.value = '';
+                            }
+                        },
+                        error: function (err) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: err.code,
+                                text: 'خطایی رخ داده است! وضعیت اینترنت خود را بررسی کنید و دوباره امتحان کنید. در صورت برطرف نشدن مشکل با پشتیبانی تماس بگیرید.',
+                                confirmButtonColor: '#3085d6',
+                            })
+                            console.log(err)
+                        }
+                    });
+                    toggleFormState(false);
+                } else {
+                    textArea.focus();
+                }
+            })
+        {% endif %}
+        // COMMENT SECTION - END
+
+        // ADD TO CART SECTION START
+        function addToCart(){
+            let quantity = document.getElementById('quantity').value;
+            $.ajax({
+                url: '{% url "cart:add" product.id %}',
+                type: 'POST',
+                data: {'quantity': quantity},
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+                },
+                success: function (response){
+                    if (response.status === 200) {
+                        Swal.fire({
+                            position: 'top-start',
+                            icon: 'success',
+                            title: 'با موفقیت به سبد خرید شما اضافه شد',
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                            window.location.assign('{% url "cart:detail" %}')
+                        })
+                    } else if (response.status === 404) {
+                        Swal.fire({
+                            icon: 'error',
+                            text: 'خطا در دریافت محصول مربوطه !',
+                            confirmButtonColor: '#3085d6',
+                        })
+                    } else if (response.status === 400) {
+                        Swal.fire({
+                            icon: 'warning',
+                            text: 'تعداد محصول انتخاب شده بیشتر از موجودیت محصول در انبار است',
+                            confirmButtonColor: '#3085d6',
+                        })
+                    }
+                },
+                error: function (error){
+                    Swal.fire({
+                        icon: 'error',
+                        title: error.code,
+                        text: 'خطایی رخ داده است! وضعیت اینترنت خود را بررسی کنید و دوباره امتحان کنید. در صورت برطرف نشدن مشکل با پشتیبانی تماس بگیرید.',
+                        confirmButtonColor: '#3085d6',
+                    })
+                    console.log(error)
+                }
+            })
+        }
+        // ADD TO CART SECTION END
+
+        // COLOR SECTION - START
+        {% if product.color.exists %}
+            let colorBox = document.querySelectorAll('.color-box .color-box-item');
+            let colorName = document.getElementById('color-name');
+            colorBox.forEach((item) => {
+                item.addEventListener('click', () => {
+                    colorName.innerText = item.dataset.hint;
+                })
+            })
+        {% endif %}
+        // COLOR SECTION - END
+
+        // SHARE SECTION START
+        let copyUrl = document.querySelector('.share-modal #copy-btn');
+        copyUrl.addEventListener('click', () => {
+             copyUrl.innerHTML = '<i class="bi bi-check-circle text-white me-1"></i> لینک کپی شد';
+             copyUrl.classList.remove('main-color-one-bg');
+             copyUrl.classList.add('main-color-three-bg');
+             navigator.clipboard.writeText(window.location.href);
+        })
+        // SHARE SECTION END
+    </script>
+{% endblock %}

@@ -1,0 +1,21 @@
+<ul class="navbar-nav h-0">
+    {% for category in categories %}
+        {% if not category.parent_category %}
+            {% if category.subs.all %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'product:category' category.slug %}">{{ category.title }}</a>
+                    <span class="showSubMenu"><i class="bi bi-chevron-left"></i></span>
+                    <ul class="navbar-nav h-0 bg-ul-f7">
+                        {% for sub in category.subs.all %}
+                            <li class="nav-item"><a href="{% url 'product:category' sub.slug %}" class="nav-link">{{ sub.title }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'product:category' category.slug %}">{{ category.title }}</a>
+                </li>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+</ul>

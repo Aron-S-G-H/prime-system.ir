@@ -1,0 +1,70 @@
+{% load render_partial %}
+<div class="container-fluid">
+    <div class="row align-items-center">
+        <div class="col-10">
+            <div class="top-menu-menu">
+                <ul class="navbar-nav">
+                    <li class="position-relative m-0"></li>
+                    <li class="nav-item main-menu-head">
+                        <a role="button" class="nav-link border-animate fromRight fw-bold">
+                            <i class="bi bi-list"></i>
+                            دسته بندی محصولات
+                        </a>
+                        <ul class="main-menu mega-container">
+                            {% for category in general_categories %}
+                                <li class="main-menu-sub-active-li">
+                                    <a href="{% url 'product:general-category' category.slug %}">
+                                        {% if category.slug == 'laptop' %}
+                                            <i class="bi bi-laptop"></i>
+                                        {% elif category.slug == 'monitor' %}
+                                            <i class="bi bi-display"></i>
+                                        {% elif category.slug == 'case' %}
+                                            <i class="bi bi-pc"></i>
+                                        {% elif category.slug == 'printer' %}
+                                            <i class="bi bi-printer"></i>
+                                        {% elif category.slug == 'keyboardandmouse' %}
+                                            <i class="bi bi-mouse2"></i>
+                                        {% else %}
+                                            <i class="bi bi-balloon-heart"></i>
+                                        {% endif %}
+                                        {{ category.title }}
+                                    </a>
+                                    <ul class="main-menu-sub back-menu" {% if category.image %}style=" background: #fff url('{{ category.image.url }}') no-repeat;"{% endif %}>
+                                        {% render_partial 'product:category_partial' category.id %}
+                                    </ul>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'blog:list' %}" class="nav-link border-animate fromRight">
+                            <i class="bi bi-pencil"></i> وبلاگ
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'main:AboutUs_Page' %}" class="nav-link border-animate fromRight">
+                            <i class="bi bi-info"></i>درباره ما
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'contact_us:Contact_page' %}" class="nav-link border-animate fromRight">
+                            <i class="bi bi-telephone"></i> تماس با ما
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    {% if information.call_center %}
+        <div class="col-2">
+            <ul class="navbar-nav text-end">
+                <li class="nav-item">
+                    <a href="tel:021{{ information.call_center }}" class="nav-item def-color">
+                        <i class="bi bi-telephone me-2"></i>
+                        <span>۰۲۱-{{ information.call_center }}</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    {% endif %}
+    </div>
+</div>

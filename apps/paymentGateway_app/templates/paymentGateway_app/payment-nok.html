@@ -1,0 +1,74 @@
+{% extends 'templates/base.html' %}
+
+{% block header %}
+    <meta name="description" content="صفحه پرداخت تاموفق و ثبت سفارش در وبسایت فروشگاهی تجهیزات الکترونیک پرایم سیستم"/>
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="keywords" content="پرایم سیستم, prime system, فروشگاه آنلاین پرایم سیستم, خرید تجهیزات الکترونیک,استوک و نو, فروش لپ‌تاپ, فروش قطعات کامپیوتر, prime system shop"/>
+    <title>پرداخت تاموفق</title>
+{% endblock %}
+
+{% block main %}
+    <!-- start main-data -->
+    <div class="content">
+        <div class="container-fluid">
+            <div class="content-box">
+                <style>
+                    .line-step-box.complete:nth-child(1):before {
+                        width: 100%;
+                    }
+                </style>
+                <div class="line-step-container d-sm-block d-none">
+                    <div class="line-step">
+                        <div class="line-step-boxs">
+                            <div class="line-step-box complete">
+                                <div class="icon">
+                                    <i class="bi bi-bag"></i>
+                                </div>
+                                <p>سبد خرید</p>
+                            </div>
+                            <div class="line-step-box complete">
+                                <div class="icon">
+                                    <i class="bi bi-file-earmark-text"></i>
+                                </div>
+                                <p>پرداخت</p>
+                            </div>
+                            <div class="line-step-box">
+                                <div class="icon">
+                                    <i class="bi bi-file-earmark-break"></i>
+                                </div>
+                                <p>تکمیل سفارش</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- start payment content -->
+                <div class="payment-content py-20 mt-5">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-6">
+                            <div class="alert-box ab-nsuccess">
+                                <div class="title">
+                                    <h5 class="h5">پرداخت ناموفق!</h5>
+                                </div>
+                                <div class="desc">
+                                    {% if status == 'CT' %}
+                                    <p class="text-muted font-14">پرداخت شما لغو شد ، در صورت نیاز به راهنمایی و مشاوره برای خرید میتوانید با ما تماس بگیرید</p>
+                                    {% elif status == 'VOCE' %}
+                                    <p class="text-muted font-14">تایید پرداخت شما با خطا مواجه شد ، در صورتی که هزینه سفارش از حساب شما کسر شده باشد مبلغ کسر شده به حساب شما برگشت داده خواهد شد . همچنین میتوانید با ما برای کسب اطمینان بیشتر تماس بگیرید</p>
+                                    {% elif status == 'TE' %}
+                                        <p class="text-muted font-14">خطا در دیافت توکن ، لطفا برای ادامه روند ثبت سفارش خود با پشتیبانی تماس بگیرید</p>
+                                    {% endif %}
+                                </div>
+                                <div class="action d-sm-block d-grid gap-2">
+                                    <a href="{% url 'main:Home_page' %}" class="btn border-0 rounded-pill main-color-two-bg">بازگشت به صفحه اصلی</a>
+                                    <a href="{% url 'main:Dashboard_Page' %}" class="btn border-0 rounded-pill main-color-one-bg">پنل کاربری</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end payment content -->
+            </div>
+        </div>
+    </div>
+    <!-- end main-data -->
+{% endblock %}

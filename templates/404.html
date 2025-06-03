@@ -1,0 +1,30 @@
+{% extends 'templates/base.html' %}
+
+{% block header %}
+    <meta name="robots" content="noindex, nofollow" />
+    <title>404</title>
+{% endblock %}
+
+{% block main %}
+    <!-- start main-data -->
+    <div class="content">
+        <div class="container-fluid">
+            <div class="content-box">
+                <div class="not-found">
+                    <div class="title">
+                        <h1 class="fs-1">خطای 404</h1>
+                    </div>
+                </div>
+                <div class="not-found-desc text-center">
+                    <p class="font-18 fw-bold text-muted">صفحه مورد نظر یافت نشد که به چند دلیل این اتفاق افتاده است:</p>
+                    <div class="d-grid my-3">
+                        <p class="font-14 text-muted mb-2">آدرس صفحه تغییر کرده است</p>
+                        <p class="font-14 text-muted mb-2">مطلب به طور کلی حذف شده است</p>
+                    </div>
+                    <a href="{% url 'main:Home_page' %}" class="btn border-0 btn-lg mt-2 main-color-three-bg rounded-pill ">صفحه اصلی</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end main-data -->
+{% endblock %}

@@ -1,0 +1,218 @@
+{% extends 'templates/base.html' %}
+{% load humanize %}
+{% load static %}
+
+{% block header %}
+    <meta name="description" content="سبد خرید شما در فروشگاه تجهیزات الکترونیک پرایم سیستم. مشاهده و مدیریت کالاهای انتخابی شما شامل لپ‌تاپ، مانیتور، کیبورد، موس و سایر تجهیزات با بهترین قیمت و کیفیت. تجربه خرید آسان و مطمئن را با ما تجربه کنید." />    <meta name="robots" content="index, follow" />
+    <meta name="canonical" content="https://prime-system.ir/cart/, https://www.prime-system.ir/cart/" />
+    <meta name="robots" content="index, follow" />
+    <meta name="keywords" content="سبد خرید, فروشگاه تجهیزات الکترونیک, پرایم سیستم, لپ‌تاپ, کیبورد, مانیتور, موس, تجهیزات جانبی استوک, تجهیزات الکترونیک نو و استوک" />
+    <title>سبد خرید</title>
+{% endblock %}
+
+{% block main %}
+    {% if not cart.cart_quantity %}
+    <div class="content">
+        <div class="container-fluid">
+            <div class="content-box">
+                <div class="empty-cart">
+                    <img src="{% static 'image/empty-cart.svg' %}" class="d-block mx-auto" alt="empty-cart">
+                    <h5 class="h5 text-center my-3">سبد خرید شما خالی است</h5>
+                    <div class="text-center">
+                        <a href="{% url 'main:Home_page' %}" class="btn border-0 main-color-one-bg rounded-pill">ادامه خرید از فروشگاه</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <!-- start main-data -->
+    <div class="content">
+        <div class="container-fluid">
+            <div class="content-box">
+                <div class="line-step-container d-sm-block d-none">
+                    <div class="line-step">
+                        <div class="line-step-boxs">
+                            <div class="line-step-box complete">
+                                <div class="icon">
+                                    <i class="bi bi-bag"></i>
+                                </div>
+                                <p>سبد خرید</p>
+                            </div>
+                            <div class="line-step-box disabled">
+                                <div class="icon">
+                                    <i class="bi bi-file-earmark-text"></i>
+                                </div>
+                                <p>جزییات پرداخت</p>
+                            </div>
+                            <div class="line-step-box disabled">
+                                <div class="icon">
+                                    <i class="bi bi-file-earmark-break"></i>
+                                </div>
+                                <p>تکمیل سفارش</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row gx-5 align-items-center">
+                    <div class="col-lg-8">
+                        <div class="cart-detail">
+                            <div class="responsive-table">
+                                <table class="table main-table table-borderless">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th></th>
+                                            <th>محصول</th>
+                                            <th>قیمت</th>
+                                            <th>تعداد</th>
+                                            <th>قیمت کل</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for item in cart %}
+                                        <tr class="cart-product">
+                                            <td>
+                                                <a role="button" onclick="removeFromCart('{{ item.unique_id }}')" data-hint="حذف محصول از سبد خرید" class="hint--left text-danger">
+                                                    <i class="bi bi-x-circle-fill"></i>
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <img src="{{ item.product.images.first.image.url }}" width="60" alt="{{ item.product.slug }}">
+                                            </td>
+                                            <td class="title"><a href="{% url 'product:detail' item.product.slug %}">{{ item.product.name }}</a></td>
+                                            <td>
+                                                <span class="num">{{ item.price|intcomma:False }}</span>
+                                                <span class="text-muted font-10">تومان</span>
+                                            </td>
+                                            <td class="counter">
+                                                <input type="hidden" class="hidden unique_id" value="{{ item.unique_id }}">
+                                                <input type="text" name="count" class="counter" value="{{ item.quantity }}">
+                                            </td>
+                                            <td>
+                                                <span class="num">{{ item.total|intcomma:False }}</span>
+                                                <span class="text-muted font-10">تومان</span>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="cart-action mt-lg-0 mt-3">
+                                <div class="row flex-wrap align-items-center">
+                                    <div class="col-sm-8">
+                                        <div class="row g-2 align-items-center">
+                                            <div class="col-sm-6">
+                                                <input type="text" class="form-control w-100 rounded-pill" placeholder="کد تخفیف">
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <button type="submit" disabled class="btn btn-discount border-0 main-color-one-bg waves-effect waves-light rounded-pill font-14" style="white-space:nowrap ;">
+                                                    اعمال کد تخفیف
+                                                    <i class="bi bi-plus"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="cart-footer-update text-sm-end text-center mt-sm-0 mt-3">
+                                            <button type="button" onclick="updateCart()" class="btn border-0 main-color-three-bg waves-effect waves-light rounded-pill font-14">بروز
+                                                رسانی سبد خرید <i class="bi bi-arrow-repeat ms-1"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="cart-payment mt-lg-0 mt-3">
+                            <div class="title text-center">
+                                <h4 class="slider-title def-color mb-3">مجموع کل سبد خرید</h4>
+                            </div>
+                            <table class="table main-table text-center">
+                                <tr>
+                                    <td class="fw-bold">حمل و نقل</td>
+                                    <td>
+                                        <span class="fw-bold">برعهده خریدار</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold">قیمت کل</td>
+                                    <td>
+                                        <span class="fw-bold">{{ cart.total|intcomma:False }}</span>
+                                        <span class="text-muted font-10">تومان</span>
+                                    </td>
+                                </tr>
+                            </table>
+                            {% if request.user.is_authenticated %}
+                            <a href="{% url 'cart:checkout' %}" class="btn mt-3 w-100 py-3 border-0 main-color-one-bg waves-effect waves-light">تکمیل سفارش
+                                <i class="bi bi-emoji-kiss"></i>
+                            </a>
+                            {% else %}
+                            <a href="{% url 'account:login' %}?next={% url 'cart:detail' %}" class="btn mt-3 w-100 py-3 border-0 btn-warning waves-effect waves-light">وارد حساب کاربری خود شوید
+                                <i class="bi bi-box-arrow-in-right"></i>
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end main-data -->
+    <script>
+        function getQuantity(){
+            let updateQuantity = {};
+            let cartProducts = document.querySelectorAll('.cart-product');
+            for (let i = 0; i  < cartProducts.length; i++) {
+                let product = cartProducts[i];
+                let uniqueId = product.querySelector('.counter .unique_id').value;
+                updateQuantity[uniqueId] = product.querySelector('.counter .counter').value;
+            }
+            return updateQuantity;
+        }
+        function updateCart(){
+            let updateQuantity = getQuantity();
+            if (updateQuantity) {
+                let data = JSON.stringify(updateQuantity);
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url "cart:update" %}',
+                    data:{
+                        'data': data,
+                    },
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+                    },
+                    success: function (response) {
+                        if (response.status === 200) {
+                            window.location.reload();
+                        } else if (response.status === 400) {
+                            Swal.fire({
+                                icon: 'warning',
+                                text: 'تعداد محصول انتخاب شده بیشتر از موجودیت محصول در انبار است',
+                                confirmButtonColor: '#3085d6',
+                            })
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                text: 'خطایی رخ داده با پشتیبانی تماس بگیرید.',
+                                confirmButtonColor: '#3085d6',
+                            })
+                        }
+                    },
+                    error: function (err) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: err.code,
+                            text: 'خطایی رخ داده است! وضعیت اینترنت خود را بررسی کنید و دوباره امتحان کنید. در صورت برطرف نشدن مشکل با پشتیبانی تماس بگیرید.',
+                            confirmButtonColor: '#3085d6',
+                        })
+                        console.log(err)
+                    }
+                })
+            }
+        }
+    </script>
+    {% endif %}
+{% endblock %}

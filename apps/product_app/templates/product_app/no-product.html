@@ -1,0 +1,29 @@
+{% extends 'templates/base.html' %}
+{% load static %}
+
+{% block header %}
+    <meta name="description" content="فروشگاه تجهیزات الکترونیکی پرایم سیستم، فروش انواع تجهیرات الکترونیک اعم از کیس و کیبورد و مانیتور نو و استوک و دست دوم"/>
+    <meta name="robots" content="index, follow" />
+    <meta name="canonical" content="https://www.prime-system.ir/products/, https://prime-system.ir/products/" />
+    <meta name="keywords" content="پرایم سیستم, prime system, فروشگاه آنلاین پرایم سیستم, خرید تجهیزات الکترونیک,استوک و نو, فروش لپ‌تاپ, فروش قطعات کامپیوتر, پیکربندی شبکه,اسمبل سیستم"/>
+    <title>محصولات پرایم</title>
+{% endblock %}
+
+{% block main %}
+    <!-- start main-data -->
+    <div class="content">
+        <div class="container-fluid">
+            <div class="content-box">
+                <div class="not-found">
+                    <div class="title">
+                        <h1 class="fs-1">محصولی پیدا نشد</h1>
+                    </div>
+                </div>
+                <div class="not-found-desc text-center">
+                    <a href="{% url 'main:Home_page' %}" role="button" class="btn border-0 btn-lg mt-2 main-color-three-bg rounded-pill ">صفحه اصلی</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end main-data -->
+{% endblock %}

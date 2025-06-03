@@ -1,0 +1,22 @@
+{% extends 'templates/base.html' %}
+
+{% block header %}
+    <meta name="description" content="بخش درباره ما فروشگاه تجهیزات الکترونیکی اچ ام الکترونیک"/>
+    <meta name="robots" content="index, follow" />
+    <meta name="canonical" content="https://hmelecteronic.ir/about-us" />
+    <meta name="keywords" content="درباره ما, پرایم سیستم, معرفی فروشگاه, تجهیزات الکترونیک, خدمات پرایم سیستم, تاریخچه فروشگاه, ماموریت ما, چشم‌انداز ما, اعتماد مشتریان, محصولات الکترونیک, فروشگاه اینترنتی, بهترین فروشگاه تجهیزات الکترونیکی">
+    <title>درباره ما</title>
+{% endblock %}
+
+{% block main %}
+    <div class="content">
+        <div class="container-fluid">
+            <div class="content-box">
+                <div class="about-us">
+                    <h3 class="h3 main-title">{{ about_us.title }}</h3>
+                    <p class="font-16" style="line-height: 40px;">{{ about_us.description|safe }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

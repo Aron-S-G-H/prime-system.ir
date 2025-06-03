@@ -1,0 +1,8 @@
+venv
+.idea
+db.sqlite3
+*__pycache__*
+media
+staticfiles
+*.txt
+PrimeSystem/settings.ini
