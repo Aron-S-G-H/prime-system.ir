@@ -31,4 +31,4 @@ A fully functional **e-commerce** and **blogging** website developed from scratc
 - **Front-end:** HTML, CSS, JavaScript
 - **Database:** PostgreSQL / SQLite (based on env)
 - **Caching:** Redis
-- **Other Tools:** Kavenegar, IRAN-KISH Gateway, django-jalali-date, hitcount
+- **Other Tools:** Kavenegar, IRAN-KISH Gateway, django-jalali-date, hitcount, Poetry
