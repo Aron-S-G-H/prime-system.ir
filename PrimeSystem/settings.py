@@ -97,7 +97,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Tehran'
 USE_I18N = True
 USE_TZ = True
 SITE_ID = 1
@@ -167,8 +167,6 @@ LOGGING = {
         },
     },
 }
-
-LOGGER = logging.getLogger("root")
 
 RSI_PUBLIC_KEY = os.path.join(BASE_DIR, '0060546281.txt')
 

@@ -6,3 +6,4 @@ media
 staticfiles
 *.txt
 PrimeSystem/settings.ini
+assets/image

@@ -7,9 +7,12 @@ from .models import CustomUser
 from django.utils.crypto import get_random_string
 from django.core.cache import cache
 from .mixins import RedirectAuthenticatedMixin
-from PrimeSystem.settings import LOGGER
 from utils.email import send_verification_code
 from utils.sms import send_otp_sms
+import logging
+
+
+LOGGER = logging.getLogger()
 
 
 class LoginView(RedirectAuthenticatedMixin, View):
@@ -33,7 +36,12 @@ class LoginView(RedirectAuthenticatedMixin, View):
             first_error_field = 'unknown'
             error_message = f'unexpected error parsing form errors: {str(e)}'
         phone_number = request.POST.get('phone', 'unknown')
-        LOGGER.warning(f'LoginView Error => {phone_number} \nfield: {first_error_field} \nmessage: {error_message} \ndata : {login_form.data.get(first_error_field)}')
+        LOGGER.warning(
+            f"\nLoginView Error => {phone_number} \n"
+            f"field: {first_error_field} \n"
+            f"message: {error_message} \n"
+            f"data: {login_form.data.get(first_error_field)}"
+        )
         return JsonResponse({'status': 400, 'error_message': error_message})
 
 
@@ -72,7 +80,12 @@ class RegisterView(RedirectAuthenticatedMixin, View):
             first_error_field = 'unknown'
             error_message = f'unexpected error parsing form errors: {str(e)}'
         phone_number = request.POST.get('phone', 'unknown')
-        LOGGER.warning(f'RegisterView Error => {phone_number} \nfield: {first_error_field} \nmessage: {error_message} \ndata: {register_form.data.get(first_error_field)}')
+        LOGGER.warning(
+            f"\RegisterView Error => {phone_number} \n"
+            f"field: {first_error_field} \n"
+            f"message: {error_message} \n"
+            f"data: {register_form.data.get(first_error_field)}"
+        )
         return render(request, 'account_app/register.html', {'register_form': register_form})
 
 

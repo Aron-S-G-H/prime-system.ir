@@ -6,13 +6,17 @@ from utils.sms import send_verify_order_sms
 from django.core.cache import cache
 from celery.result import AsyncResult
 from celery.exceptions import TimeoutError
-from PrimeSystem.settings import LOGGER
+import logging
+
+
+LOGGER = logging.getLogger()
+
 
 def verify(request, order_uuid):
     if order_uuid and is_valid_uuid(order_uuid):
         order_status = request.GET.get('status')
         order_id = cache.get(order_uuid)
-        LOGGER.info(f'Verifying Order => \norderID: {order_id} \norderUUID: {order_uuid} \nstatus: {order_status}')
+        LOGGER.info(f'\nVerifying Order => \norderID: {order_id} \norderUUID: {order_uuid} \nstatus: {order_status}')
         if order_status == 'OK':
             send_email_notif_to_admin.apply_async(
                 ('سفارش جدید', 'سفارش جدیدی در وبسایت ثبت شده است'),

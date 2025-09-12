@@ -1,6 +1,10 @@
 from django.core.mail import send_mail
 from django.conf import settings
 from celery import shared_task
+import logging
+
+
+LOGGER = logging.getLogger()
 
 
 @shared_task
@@ -15,7 +19,7 @@ def send_verification_code(code: str, user_email: str):
         )
         return {"status": True, "message": "Email Verification Code Sent Successfully"}
     except Exception as ex:
-        settings.LOGGER.error(f"Email Verification Code ERROR: {ex}")
+        LOGGER.error(f"Email Verification Code ERROR: {ex}")
         return {"status": False, "message": "An unexpected error occurred"}
 
 
@@ -31,5 +35,5 @@ def send_email_notif_to_admin(subject: str, message: str):
         )
         return {"status": True, "message": "Email Verification Code Sent Successfully"}
     except Exception as ex:
-        settings.LOGGER.error(f"Email Notification To Admin ERROR: {ex}")
+        LOGGER.error(f"Email Notification To Admin ERROR: {ex}")
         return {"status": False, "message": "An unexpected error occurred"}

@@ -1,4 +1,3 @@
-from PrimeSystem.settings import LOGGER
 from django.shortcuts import render, redirect, get_object_or_404
 from .cart_module import Cart
 from django.http import JsonResponse
@@ -10,6 +9,10 @@ import json
 from utils.encrypt_data import encrypt_data
 from django.core.cache import cache
 from .models import UserOrder, ProductOrder
+import logging
+
+
+LOGGER = logging.getLogger()
 
 
 class CartDetailView(TemplateView):
@@ -115,10 +118,10 @@ class CheckOutView(LoginRequiredMixin, View):
                 'data': encrypt_data(data),
             }
             cart.remove_cart()
-            LOGGER.warning(f'Redirecting to paymentGateway => \nOrderID: {order_id} \nUser: {phone_number} - {user_full_name}')
+            LOGGER.warning(f'\nRedirecting to paymentGateway => \nOrderID: {order_id} \nUser: {phone_number} - {user_full_name}')
             return render(request, 'cart_app/redirect_to_payment.html', context)
         errors = {field: error for field, errors in form.errors.items() for error in errors}
         field = list(errors.keys())[0]
         error_message = list(errors.values())[0]
-        LOGGER.warning(f'CheckOutView Error => \nUser: {phone_number} - {user_full_name} \nfield: {field} \nmessage: {error_message} \ndata: {request.POST.get(field)}')
+        LOGGER.warning(f'\nCheckOutView Error => \nUser: {phone_number} - {user_full_name} \nfield: {field} \nmessage: {error_message} \ndata: {request.POST.get(field)}')
         return render(request, 'cart_app/checkout.html', {'form': form, 'error_message': error_message, 'field': field})

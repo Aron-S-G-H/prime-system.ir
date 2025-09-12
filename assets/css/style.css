@@ -2672,6 +2672,26 @@ ul.show {
     box-shadow: none;
 }
 
+.password-container {
+    position: relative;
+}
+.password-container .form-control {
+    padding-left: 2.5rem; /* فضای کافی برای آیکون */
+}
+.password-toggle {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: #6c757d;
+}
+/* هماهنگی با form-floating */
+.form-floating .password-toggle {
+    top: 2.5rem; /* تنظیم موقعیت آیکون در form-floating */
+}
+
 /* end login modal */
 
 /* start page product */

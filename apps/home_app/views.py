@@ -1,13 +1,15 @@
 from django.shortcuts import render
 from django.views.generic import View, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from PrimeSystem.settings import LOGGER
 from .models import SliderBanner, SmallBanner, LargeBanner, CompanyLogo
 from apps.product_app.models import Category, Product, ProductAttributeValue, ProductImage
 from apps.blog_app.models import BlogPost
 from django.db.models import Prefetch
 from django.http import JsonResponse
+import logging
 
+
+LOGGER = logging.getLogger()
 
 
 class HomeView(View):

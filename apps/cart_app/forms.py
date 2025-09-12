@@ -1,6 +1,8 @@
 from django import forms
 from utils.validators import validate_convert_phone
 from .models import UserOrder
+from django.forms import ValidationError
+import re
 
 
 class CheckoutForm(forms.ModelForm):
@@ -68,3 +70,15 @@ class CheckoutForm(forms.ModelForm):
         if postal_code and not postal_code.isdigit():
             raise forms.ValidationError('کد پستی معتبر نمی باشد')
         return postal_code
+
+    def clean_first_name(self):
+        first_name = self.cleaned_data['first_name'].strip()
+        if not re.match(r'^[\u0600-\u06FF\s]+$', first_name):
+            raise ValidationError('نام معتبر نمی باشد ، فقط از حروف استفاده کنید')
+        return first_name
+
+    def clean_last_name(self):
+        last_name = self.cleaned_data['last_name'].strip()
+        if not re.match(r'^[\u0600-\u06FF\s]+$', last_name):
+            raise ValidationError('نام خانوادگی معتبر نمی باشد ، فقط از حروف استفاده کنید')
+        return last_name

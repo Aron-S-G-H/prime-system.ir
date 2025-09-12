@@ -1,6 +1,10 @@
 from kavenegar import *
 from django.conf import settings
 from celery import shared_task
+import logging
+
+
+LOGGER = logging.getLogger()
 
 
 # send OTP sms (needs template)
@@ -15,12 +19,12 @@ def send_otp_sms(phone_number: str, code: str):
             'type': 'sms',  # sms vs call
         }
         response = api.verify_lookup(params=params)
-        settings.LOGGER.info(f"OTP sms sent successfully to {response[0]['receptor']}")
+        LOGGER.info(f"OTP sms sent successfully to {response[0]['receptor']}")
         return 'OTP successfully'
     except (APIException, HTTPException) as e:
         exception_name = type(e).__name__
         exception_message = str(e)
-        settings.LOGGER.error(f"{exception_name} sending OTP to {phone_number}: {exception_message}")
+        LOGGER.error(f"{exception_name} sending OTP to {phone_number}: {exception_message}")
         return {'status': 'error', 'error': exception_name, 'message': exception_message}
 
 
@@ -39,5 +43,5 @@ def send_verify_order_sms(phone_number, order_id):
     except (APIException, HTTPException) as e:
         exception_name = type(e).__name__
         exception_message = e.args[0].decode()
-        settings.LOGGER.error(f"{exception_name} Verify order sms {phone_number}: {exception_message}")
+        LOGGER.error(f"{exception_name} Verify order sms {phone_number}: {exception_message}")
         return {'status': False, 'message': f'Verify order sms {exception_name} error : {exception_message}'}

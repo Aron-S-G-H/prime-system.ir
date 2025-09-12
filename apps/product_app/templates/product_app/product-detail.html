@@ -206,12 +206,7 @@
                             </div>
                             <div class="se-cart-item">
                                 {% if product.availability %}
-                                    {% if product.disable_order %}
-                                    <button class="btn w-100 d-block border-0 btn-warning rounded-3 py-3 font-16 waves-effect waves-light">
-                                        <i class="bi bi-emoji-neutral"></i> برای ثبت سفارش تماس بگیرید
-                                    </button>
-                                    {% else %}
-                                    <button onclick="addToCart()" class="btn w-100 d-block border-0 main-color-one-bg rounded-3 py-3 font-16 waves-effect waves-light">
+                                    <button onclick="{% if product.disable_order %}disableOrder(){% else %}addToCart(){% endif %}" class="btn w-100 d-block border-0 main-color-one-bg rounded-3 py-3 font-16 waves-effect waves-light">
                                         افزودن به سبد خرید <i class="bi bi-emoji-heart-eyes"></i>
                                     </button>
                                     <div class="mt-3 d-flex justify-content-center counter_product">
@@ -219,18 +214,11 @@
                                             <input id="quantity" aria-label="quantity" type="text" name="count" class="counter" value="1">
                                         </div>
                                     </div>
-                                    {% endif %}
                                 {% else %}
                                     <button class="btn w-100 d-block border-0 btn-secondary rounded-3 py-3 font-16 waves-effect waves-light">
                                         <i class="bi bi-emoji-frown"></i> محصول موجود نمی باشد
                                     </button>
                                 {% endif %}
-                            </div>
-                        </div>
-                        <div class="d-flex main-color-two-bg border rounded-3 align-items-center justify-content-between mt-3 px-3 py-2">
-                            <div>
-                                <i class="bi bi-info-circle"></i>
-                                <span class="font-14" style="font-weight: bold;">با توجه به نوسانات قیمت ارز ، لطفا قبل از نهایی کردن خرید خود تماس بگیرید</span>
                             </div>
                         </div>
                     </div>
@@ -554,19 +542,8 @@
                                         <h6 class="title-en text-muted text-overflow-2">{{ product.english_name }}</h6>
                                     </div>
                                     <div class="foot d-flex justify-content-between align-items-center">
-                                        {% if product.disable_order %}
-                                        <div class="d-flex align-items-center justify-content-center me-3">
-                                            <a class="btn border-0 shadow-box waves-effect waves-light" role="button" data-hint="برای ثبت سفارش تماس بگیرید" style="background-color: white" href="tel:{{ information.phone_number }}">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-emoji-neutral" viewBox="0 0 16 16">
-                                                  <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"></path>
-                                                  <path d="M4 10.5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 0-1h-7a.5.5 0 0 0-.5.5m3-4C7 5.672 6.552 5 6 5s-1 .672-1 1.5S5.448 8 6 8s1-.672 1-1.5m4 0c0-.828-.448-1.5-1-1.5s-1 .672-1 1.5S9.448 8 10 8s1-.672 1-1.5"></path>
-                                                </svg>
-                                                <span class="text-overflow fw-bold font-14">تماس بگیرید</span>
-                                            </a>
-                                        </div>
-                                        {% else %}
                                         <div class="d-flex align-items-center justify-content-center">
-                                            <a href="{% url 'cart:add' product.id %}" role="button" aria-label="add to cart">
+                                            <a {% if product.disable_order %}onclick="disableOrder()"{% else %}href="{% url 'cart:add' product.id %}"{% endif %} role="button" aria-label="add to cart">
                                                 <div data-hint="افزودن به سبد خرید" class="add hint--right">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-heart" viewBox="0 0 16 16">
                                                         <path fill-rule="evenodd" d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0M14 14V5H2v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1M8 7.993c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132"></path>
@@ -574,7 +551,6 @@
                                                 </div>
                                             </a>
                                         </div>
-                                        {% endif %}
                                         <div class="price d-flex flex-column justify-content-end">
                                             {% if product.special_price %}
                                                 <div>
@@ -738,7 +714,7 @@
                     } else if (response.status === 400) {
                         Swal.fire({
                             icon: 'warning',
-                            text: 'تعداد محصول انتخاب شده بیشتر از موجودیت محصول در انبار است',
+                            text: 'تعداد محصول انتخاب شده بیشتر از موجودیت محصول در انبار است ، سبدخرید با تعداد موجودیت محصول رو بررسی کنید .',
                             confirmButtonColor: '#3085d6',
                         })
                     }

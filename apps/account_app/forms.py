@@ -4,6 +4,7 @@ from utils.validators import validate_convert_phone
 from django.core.validators import EmailValidator
 from django import forms
 from django.forms import ValidationError
+import re
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -29,7 +30,7 @@ class CustomUserChangeForm(UserChangeForm):
 
 
 class LoginForm(forms.Form):
-    phone = forms.CharField(required=True, widget=forms.TextInput(
+    phone = forms.CharField(required=True, max_length=11, widget=forms.TextInput(
         attrs={
             'name': 'phone',
             'placeholder': 'تلفن همره',
@@ -69,7 +70,7 @@ class RegisterForm(forms.Form):
             'class': 'form-control float-input',
         }
     ))
-    phone = forms.CharField(required=True, widget=forms.TextInput(
+    phone = forms.CharField(required=True, max_length=11, widget=forms.TextInput(
         attrs={
             'name': 'phone',
             'placeholder': 'تلفن همره',
@@ -108,14 +109,14 @@ class RegisterForm(forms.Form):
         return phone_number
 
     def clean_first_name(self):
-        first_name = self.cleaned_data['first_name']
-        if not first_name.isalpha():
+        first_name = self.cleaned_data['first_name'].strip()
+        if not re.match(r'^[\u0600-\u06FF\s]+$', first_name):
             raise ValidationError('نام معتبر نمی باشد ، فقط از حروف استفاده کنید')
         return first_name
 
     def clean_last_name(self):
-        last_name = self.cleaned_data['last_name']
-        if not last_name.isalpha():
+        last_name = self.cleaned_data['last_name'].strip()
+        if not re.match(r'^[\u0600-\u06FF\s]+$', last_name):
             raise ValidationError('نام خانوادگی معتبر نمی باشد ، فقط از حروف استفاده کنید')
         return last_name
 

@@ -267,40 +267,9 @@
                                             <h6 class="title-en text-muted text-overflow-2">{{ product.english_name }}</h6>
                                         </div>
                                         {% if product.availability %}
-                                            {% if product.disable_order %}
                                             <div class="foot d-flex justify-content-between align-items-center">
                                                 <div class="d-flex align-items-center justify-content-center">
-                                                    <a class="btn border-0 shadow-box waves-effect waves-light" data-hint="برای ثبت سفارش تماس بگیرید" style="background-color: white" href="tel:{{ information.phone_number }}">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-emoji-neutral" viewBox="0 0 16 16">
-                                                          <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"></path>
-                                                          <path d="M4 10.5a.5.5 0 0 0 .5.5h7a.5.5 0 0 0 0-1h-7a.5.5 0 0 0-.5.5m3-4C7 5.672 6.552 5 6 5s-1 .672-1 1.5S5.448 8 6 8s1-.672 1-1.5m4 0c0-.828-.448-1.5-1-1.5s-1 .672-1 1.5S9.448 8 10 8s1-.672 1-1.5"></path>
-                                                        </svg>
-                                                        <span class="text-overflow fw-bold font-14">تماس بگیرید</span>
-                                                    </a>
-                                                </div>
-                                                <div class="price d-flex flex-column justify-content-end">
-                                                    {% if product.special_price %}
-                                                        <div>
-                                                            <span class="fw-bold font-18 def-color">{{ product.special_price|intcomma:False }}</span>
-                                                            <span class="badge main-color-two-bg rounded-pill">{{ product.discount_percent }}%</span>
-                                                        </div>
-                                                        <div class="d-flex justify-content-center align-items-center">
-                                                            <span
-                                                                class="text-muted font-14 text-decoration-line-through">{{ product.base_price|intcomma:False }}</span>
-                                                            <span class="text-muted font-14 ms-2">تومان</span>
-                                                        </div>
-                                                    {% else %}
-                                                        <div>
-                                                            <span class="fw-bold font-18 def-color">{{ product.base_price|intcomma:False }}</span>
-                                                            <span class="text-muted font-14 ms-2">تومان</span>
-                                                        </div>
-                                                    {% endif %}
-                                                </div>
-                                            </div>
-                                            {% else %}
-                                            <div class="foot d-flex justify-content-between align-items-center">
-                                                <div class="d-flex align-items-center justify-content-center">
-                                                    <a href="{% url 'cart:add' product.id %}">
+                                                    <a {% if product.disable_order %}onclick="disableOrder()"{% else %}href="{% url 'cart:add' product.id %}"{% endif %}>
                                                         <div data-hint="افزودن به سبد خرید" class="add hint--right">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag-heart" viewBox="0 0 16 16">
                                                                 <path fill-rule="evenodd" d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0M14 14V5H2v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1M8 7.993c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132"></path>
@@ -327,7 +296,6 @@
                                                     {% endif %}
                                                 </div>
                                             </div>
-                                            {% endif %}
                                         {% else %}
                                             <div class="foot d-flex justify-content-center align-items-center">
                                                 <div class="d-flex align-items-center justify-content-center">

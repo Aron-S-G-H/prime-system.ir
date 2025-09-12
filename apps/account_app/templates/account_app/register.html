@@ -37,50 +37,46 @@
                                     {% csrf_token %}
                                     <div class="form-floating mb-3">
                                         {{ register_form.first_name }}
+                                        <label for="floatingFirstName">نام</label>
                                         {% if register_form.first_name.errors %}
-                                            <label for="floatingFirstName" class="text-danger">{{ register_form.first_name.errors.0 }}</label>
-                                        {% else %}
-                                            <label for="floatingFirstName">نام</label>
+                                            <small class="text-danger d-block mt-1">{{ register_form.first_name.errors.0 }}</small>
                                         {% endif %}
                                     </div>
                                     <div class="form-floating mb-3">
                                         {{ register_form.last_name }}
+                                        <label for="floatingLastName">نام خانوادگی</label>
                                         {% if register_form.last_name.errors %}
-                                            <label for="floatingLastName" class="text-danger">{{ register_form.last_name.errors.0 }}</label>
-                                        {% else %}
-                                            <label for="floatingLastName">نام خانوادگی</label>
+                                            <small class="text-danger d-block mt-1">{{ register_form.last_name.errors.0 }}</small>
                                         {% endif %}
                                     </div>
                                     <div class="form-floating mb-3">
                                         {{ register_form.phone }}
+                                        <label for="floatingInputMobile">تلفن همراه</label>
                                         {% if register_form.phone.errors %}
-                                            <label for="floatingInputMobile" class="text-danger">{{ register_form.phone.errors.0 }}</label>
-                                        {% else %}
-                                            <label for="floatingInputMobile">تلفن همراه</label>
+                                            <small class="text-danger d-block mt-1">{{ register_form.phone.errors.0 }}</small>
                                         {% endif %}
                                     </div>
                                     <div class="form-floating mb-3">
                                         {{ register_form.email }}
+                                        <label for="floatingInputEmail">ایمیل (اختیاری)</label>
                                         {% if register_form.email.errors %}
-                                            <label for="floatingInputEmail" class="text-danger">{{ register_form.email.errors.0 }}</label>
-                                        {% else %}
-                                            <label for="floatingInputEmail">ایمیل (اختیاری)</label>
+                                            <small class="text-danger d-block mt-1">{{ register_form.email.errors.0 }}</small>
                                         {% endif %}
                                     </div>
-                                    <div class="form-floating mb-3">
+                                    <div class="form-floating mb-3 password-container">
                                         {{ register_form.password }}
+                                        <label for="floatingPassword">کلمه عبور</label>
+                                        <i class="bi bi-eye-slash password-toggle" onclick="togglePassword('floatingPassword')"></i>
                                         {% if register_form.password.errors %}
-                                            <label for="floatingPassword" class="text-danger">{{ register_form.password.errors.0 }}</label>
-                                        {% else %}
-                                            <label for="floatingPassword">کلمه عبور</label>
+                                            <small class="text-danger d-block mt-1">{{ register_form.password.errors.0 }}</small>
                                         {% endif %}
                                     </div>
-                                    <div class="form-floating mb-3">
+                                    <div class="form-floating mb-3 password-container">
                                         {{ register_form.confirm_password }}
+                                        <label for="floatingConfirm">تکرار کلمه عبور</label>
+                                        <i class="bi bi-eye-slash password-toggle" onclick="togglePassword('floatingConfirm')"></i>
                                         {% if register_form.confirm_password.errors %}
-                                            <label for="floatingPasswordRe" class="text-danger">{{ register_form.confirm_password.errors.0 }}</label>
-                                        {% else %}
-                                            <label for="floatingPasswordRe">تکرار کلمه عبور</label>
+                                            <small class="text-danger d-block mt-1">{{ register_form.password.errors.0 }}</small>
                                         {% endif %}
                                     </div>
                                     <div class="form-group">
@@ -91,7 +87,7 @@
                                     <span>یا</span>
                                 </div>
                                 <div class="d-flex justify-content-center">
-                                    <a href="{% url 'account:login' %}">حساب کاربری دارم ! ورود به فروشگاه</a>
+                                    <a href="{% url 'account:login' %}" class="text-decoration-underline">حساب کاربری دارم ! ورود به فروشگاه</a>
                                 </div>
                             </div>
                         </div>
@@ -101,4 +97,19 @@
         </div>
     </div>
     <!-- end main-data -->
+    <script>
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const icon = input.parentElement.querySelector('.password-toggle');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('bi-eye-slash');
+                icon.classList.add('bi-eye');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('bi-eye');
+                icon.classList.add('bi-eye-slash');
+            }
+        }
+    </script>
 {% endblock %}
